@@ -1944,6 +1944,9 @@ async def _run_auth_state_machine(pane: str) -> dict:
         log_entries.append(msg)
         _save_portal_message(f"[auth-v2] {msg}", role="assistant")
 
+    # Clear tmux scrollback so stale text from prior runs cannot poison _detect_auth_screen
+    await _run_subprocess_async(["tmux", "clear-history", "-t", pane])
+
     while retry_count <= max_retries:
         # --- Phase 1: Start Claude /login ---
         log(f"Starting auth flow (attempt {retry_count + 1}/{max_retries + 1})")
@@ -1955,7 +1958,7 @@ async def _run_auth_state_machine(pane: str) -> dict:
         claude_running = await _is_claude_running_async(pane)
         if not claude_running:
             log("Claude not running — launching 'claude /login'")
-            launch_cmd = f"cd {Path.home()} && claude /login"
+            launch_cmd = f"clear && cd {Path.home()} && claude /login"
             await _run_subprocess_async(["tmux", "send-keys", "-t", pane, "-l", launch_cmd], check=True)
             await _run_subprocess_async(["tmux", "send-keys", "-t", pane, "Enter"], check=True)
         else:
@@ -2021,6 +2024,8 @@ async def _run_auth_state_machine(pane: str) -> dict:
             if await _is_claude_running_async(pane):
                 await _kill_claude_process()
                 await asyncio.sleep(2.0)
+            # Clear tmux scrollback before next attempt so stale error text cannot poison detection
+            await _run_subprocess_async(["tmux", "clear-history", "-t", pane])
 
     log(f"Auth flow FAILED after {max_retries + 1} attempts")
     return {"started": False, "error": "auth flow failed after retries", "log": log_entries}
