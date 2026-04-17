@@ -9,11 +9,10 @@
  */
 
 import { Handler } from '@netlify/functions'
-import { SignJWT } from 'jose'
-import { importPKCS8 } from 'jose'
+import { SignJWT, importJWK } from 'jose'
 
 const ACG_CIV_ID = process.env.ACG_CIV_ID || 'acg'
-const ACG_PRIVATE_KEY = process.env.ACG_PRIVATE_KEY_PEM // PEM format
+const ACG_PRIVATE_KEY_B64 = process.env.ACG_PRIVATE_KEY_B64 // Base64-encoded 32-byte Ed25519 seed
 
 const TOKEN_EXPIRY_SECONDS = 300 // 5 minutes
 
@@ -32,16 +31,21 @@ export const handler: Handler = async (event, context) => {
       }
     }
 
-    if (!ACG_PRIVATE_KEY) {
-      console.error('ACG_PRIVATE_KEY_PEM not configured')
-      return { 
-        statusCode: 500, 
-        body: JSON.stringify({ error: 'Server configuration error' }) 
+    if (!ACG_PRIVATE_KEY_B64) {
+      console.error('ACG_PRIVATE_KEY_B64 not configured')
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Server configuration error' })
       }
     }
 
-    // Import Ed25519 private key from PEM
-    const privateKey = await importPKCS8(ACG_PRIVATE_KEY, 'EdDSA')
+    // Import Ed25519 private key from base64 seed
+    const seed = Buffer.from(ACG_PRIVATE_KEY_B64, 'base64')
+    const privateKey = await importJWK({
+      kty: 'OKP',
+      crv: 'Ed25519',
+      d: seed.toString('base64url'),
+    }, 'EdDSA')
 
     // Generate JWT with short expiry
     const now = Math.floor(Date.now() / 1000)
