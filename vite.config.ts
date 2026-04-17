@@ -15,6 +15,16 @@ export default defineConfig({
         target: 'ws://localhost:8097',
         ws: true,
       },
+      '/hub-api': {
+        target: 'http://87.99.131.49:8900',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/hub-api/, ''),
+      },
+      '/events-api': {
+        target: 'http://87.99.131.49:8400',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/events-api/, ''),
+      },
     },
   },
   test: {

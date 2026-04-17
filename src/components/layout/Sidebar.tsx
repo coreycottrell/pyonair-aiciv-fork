@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { to: '/points', icon: '\u{2B50}', label: 'Points' },
   { to: '/docs', icon: '\u{1F4D6}', label: 'Docs' },
   { to: '/sheets', icon: '\u{1F4CA}', label: 'Sheets' },
+  { to: '/triad', icon: '\u{26A1}', label: 'Triad' },
   { to: '/status', icon: '\u{1F4CA}', label: 'Status' },
   { to: '/settings', icon: '\u{2699}\u{FE0F}', label: 'Settings' },
 ] as const

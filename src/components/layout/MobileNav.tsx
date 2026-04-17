@@ -19,6 +19,7 @@ const MORE_ITEMS = [
   { to: '/docs', icon: '\u{1F4D6}', label: 'Docs' },
   { to: '/sheets', icon: '\u{1F4CA}', label: 'Sheets' },
   { to: '/bookmarks', icon: '\u{1F4CC}', label: 'Bookmarks' },
+  { to: '/triad', icon: '\u{26A1}', label: 'Triad' },
   { to: '/status', icon: '\u{1F4CA}', label: 'Status' },
   { to: '/settings', icon: '\u{2699}\u{FE0F}', label: 'Settings' },
 ] as const

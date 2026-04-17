@@ -18,6 +18,7 @@ import OrgChartView from './components/agents/OrgChartView'
 import { DocsView } from './components/docs/DocsView'
 import { SheetsView } from './components/sheets/SheetsView'
 import { PointsView } from './components/points/PointsView'
+import { TriadView } from './components/triad/TriadView'
 import { useIdentityStore } from './stores/identityStore'
 import { useSettingsStore } from './stores/settingsStore'
 import { apiGet } from './api/client'
@@ -48,6 +49,7 @@ function AuthenticatedApp() {
         <Route path="/points" element={<PointsView />} />
         <Route path="/docs" element={<DocsView />} />
         <Route path="/sheets" element={<SheetsView />} />
+        <Route path="/triad" element={<TriadView />} />
         <Route path="/status" element={<StatusView />} />
         <Route path="/settings" element={<SettingsView />} />
         {/* Witness extensions — lazy-loaded, only present in Witness's local build */}
