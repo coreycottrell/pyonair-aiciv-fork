@@ -10,6 +10,10 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     checkAuth()
   }, [checkAuth])
 
+  // Public routes bypass auth
+  const hash = window.location.hash
+  if (hash.startsWith('#/triad')) return <>{children}</>
+
   if (loading) return <FullPageSpinner />
   if (!authenticated) return <AuthModal />
 

@@ -1,6 +1,6 @@
 export type TriadMember = 'acg' | 'proof' | 'discovers'
 
-export type MemberStatus = 'online' | 'offline' | 'compacting'
+export type MemberStatus = 'online' | 'offline' | 'compacting' | 'away'
 
 export interface TriadAgent {
   id: TriadMember
@@ -10,6 +10,7 @@ export interface TriadAgent {
   currentTask: string
   contextPct: number
   color: string
+  lastSeenAt?: number
 }
 
 export interface TriadMessage {
@@ -18,6 +19,7 @@ export interface TriadMessage {
   target: TriadMember | 'all'
   content: string
   timestamp: number
+  _pending?: boolean
 }
 
 export interface Priority {

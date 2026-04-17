@@ -98,9 +98,16 @@ export default function App() {
 
   return (
     <HashRouter>
-      <AuthGuard>
-        <AppInner />
-      </AuthGuard>
+      <Routes>
+        {/* Triad page is public — no auth required */}
+        <Route path="/triad" element={<TriadView />} />
+        {/* Everything else requires auth */}
+        <Route path="*" element={
+          <AuthGuard>
+            <AppInner />
+          </AuthGuard>
+        } />
+      </Routes>
     </HashRouter>
   )
 }

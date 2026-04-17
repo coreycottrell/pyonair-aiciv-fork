@@ -40,6 +40,28 @@ function AgentCard({ agent }: { agent: TriadAgent }) {
   )
 }
 
+/* ─── Simple markdown renderer ─── */
+function renderMarkdown(text: string) {
+  return text.split('\n').map((line, i) => {
+    // Bold: **text**
+    const parts = line.split(/(\*\*[^*]+\*\*)/g).map((part, j) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={j}>{part.slice(2, -2)}</strong>
+      }
+      // Links: [text](url)
+      const linkParts = part.split(/(\[[^\]]+\]\([^)]+\))/g).map((lp, k) => {
+        const linkMatch = lp.match(/\[([^\]]+)\]\(([^)]+)\)/)
+        if (linkMatch) {
+          return <a key={k} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" style={{ color: '#74b9ff' }}>{linkMatch[1]}</a>
+        }
+        return lp
+      })
+      return <span key={j}>{linkParts}</span>
+    })
+    return <div key={i}>{parts.length > 0 ? parts : <br />}</div>
+  })
+}
+
 /* ─── Chat message ─── */
 function ChatMessage({ msg }: { msg: TriadMessage }) {
   const senderColor = SENDER_COLORS[msg.sender] || '#a0a0b0'
@@ -55,7 +77,7 @@ function ChatMessage({ msg }: { msg: TriadMessage }) {
         </span>
         <span className="triad-msg-time">{time}</span>
       </div>
-      <div className="triad-msg-body">{msg.content}</div>
+      <div className="triad-msg-body">{renderMarkdown(msg.content)}</div>
     </div>
   )
 }
