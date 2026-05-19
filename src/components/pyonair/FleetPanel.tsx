@@ -1,9 +1,9 @@
 import './witness.css'
 /**
- * FleetPanel — Witness-only fleet management view
+ * FleetPanel — Pyonair-only fleet management view
  *
- * Shows all running AiCIV containers, their health, and quick actions.
- * Data sourced from /api/witness/fleet (witness_extensions.py).
+ * Shows all running Pyonair containers, their health, and quick actions.
+ * Data sourced from /api/pyonair/fleet (witness_extensions.py).
  */
 import { useEffect, useState } from 'react'
 
@@ -22,7 +22,7 @@ export function FleetPanel() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/witness/fleet')
+    fetch('/api/pyonair/fleet')
       .then(r => r.json())
       .then(data => {
         setContainers(data.containers ?? [])

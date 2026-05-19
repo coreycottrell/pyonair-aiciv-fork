@@ -11,7 +11,7 @@ beforeEach(() => {
 
 describe('apiFetch', () => {
   it('sends Authorization header when token exists', async () => {
-    localStorage.setItem('aiciv-portal-token', 'my-token')
+    localStorage.setItem('pyonair-portal-token', 'my-token')
     mockFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
@@ -43,7 +43,7 @@ describe('apiFetch', () => {
   })
 
   it('sets Content-Type for JSON body', async () => {
-    localStorage.setItem('aiciv-portal-token', 'tok')
+    localStorage.setItem('pyonair-portal-token', 'tok')
     mockFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
@@ -72,7 +72,7 @@ describe('apiFetch', () => {
   })
 
   it('handles 401 by clearing token', async () => {
-    localStorage.setItem('aiciv-portal-token', 'old-token')
+    localStorage.setItem('pyonair-portal-token', 'old-token')
     const reloadMock = vi.fn()
     Object.defineProperty(window, 'location', {
       value: { ...window.location, reload: reloadMock },
@@ -87,7 +87,7 @@ describe('apiFetch', () => {
     })
 
     await expect(apiFetch('/api/test')).rejects.toThrow('Unauthorized')
-    expect(localStorage.getItem('aiciv-portal-token')).toBeNull()
+    expect(localStorage.getItem('pyonair-portal-token')).toBeNull()
   })
 
   it('returns text for non-JSON responses', async () => {

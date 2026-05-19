@@ -19,7 +19,7 @@ export function AuthModal() {
     <div className="auth-overlay">
       <div className="auth-card">
         <div className="auth-header">
-          <h1 className="auth-title">AiCIV Portal</h1>
+          <h1 className="auth-title">Pyonair Portal</h1>
           <p className="auth-subtitle">Enter your access token to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="auth-form">

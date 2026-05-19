@@ -32,7 +32,7 @@ describe('authStore', () => {
     expect(result).toBe(true)
     expect(useAuthStore.getState().authenticated).toBe(true)
     expect(useAuthStore.getState().token).toBe('test-token')
-    expect(localStorage.getItem('aiciv-portal-token')).toBe('test-token')
+    expect(localStorage.getItem('pyonair-portal-token')).toBe('test-token')
   })
 
   it('login fails with invalid token', async () => {
@@ -57,14 +57,14 @@ describe('authStore', () => {
   })
 
   it('logout clears token', () => {
-    localStorage.setItem('aiciv-portal-token', 'token')
+    localStorage.setItem('pyonair-portal-token', 'token')
     useAuthStore.setState({ token: 'token', authenticated: true })
 
     useAuthStore.getState().logout()
 
     expect(useAuthStore.getState().authenticated).toBe(false)
     expect(useAuthStore.getState().token).toBeNull()
-    expect(localStorage.getItem('aiciv-portal-token')).toBeNull()
+    expect(localStorage.getItem('pyonair-portal-token')).toBeNull()
   })
 })
 
@@ -76,7 +76,7 @@ describe('settingsStore', () => {
 
   it('persists theme to localStorage', () => {
     useSettingsStore.getState().setTheme('light')
-    expect(localStorage.getItem('aiciv-theme')).toBe('light')
+    expect(localStorage.getItem('pyonair-theme')).toBe('light')
     expect(useSettingsStore.getState().theme).toBe('light')
   })
 
@@ -87,7 +87,7 @@ describe('settingsStore', () => {
   })
 
   it('loads theme from storage', () => {
-    localStorage.setItem('aiciv-theme', 'light')
+    localStorage.setItem('pyonair-theme', 'light')
     useSettingsStore.getState().loadFromStorage()
     expect(useSettingsStore.getState().theme).toBe('light')
   })

@@ -38,7 +38,7 @@ class MockWebSocket {
 const originalWebSocket = globalThis.WebSocket
 
 beforeEach(() => {
-  localStorage.setItem('aiciv-portal-token', 'test-token')
+  localStorage.setItem('pyonair-portal-token', 'test-token')
   ;(globalThis as unknown as Record<string, unknown>).WebSocket = MockWebSocket as unknown
 })
 
@@ -58,7 +58,7 @@ describe('ChatWebSocket', () => {
   })
 
   it('does not connect without token', () => {
-    localStorage.removeItem('aiciv-portal-token')
+    localStorage.removeItem('pyonair-portal-token')
     const ws = new ChatWebSocket()
     ws.connect()
     expect(ws.connected).toBe(false)

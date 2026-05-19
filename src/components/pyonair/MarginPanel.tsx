@@ -1,8 +1,8 @@
 /**
- * MarginPanel — Witness-only revenue / margin tracking
+ * MarginPanel — Pyonair-only revenue / margin tracking
  *
  * Shows per-CIV margin data from margin-corey.json and margin-primary.json.
- * Data sourced from /api/witness/margins (witness_extensions.py).
+ * Data sourced from /api/pyonair/margins (witness_extensions.py).
  */
 import { useEffect, useState } from 'react'
 
@@ -22,7 +22,7 @@ export function MarginPanel() {
   const [totals, setTotals] = useState<{ revenue: number; cost: number; margin: number } | null>(null)
 
   useEffect(() => {
-    fetch('/api/witness/margins')
+    fetch('/api/pyonair/margins')
       .then(r => r.json())
       .then(data => {
         setEntries(data.entries ?? [])

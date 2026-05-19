@@ -124,7 +124,7 @@ describe('AuthModal', () => {
         <AuthModal />
       </MemoryRouter>
     )
-    expect(screen.getByText('AiCIV Portal')).toBeInTheDocument()
+    expect(screen.getByText('Pyonair Portal')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('Bearer token...')).toBeInTheDocument()
     expect(screen.getByText('Login')).toBeInTheDocument()
   })

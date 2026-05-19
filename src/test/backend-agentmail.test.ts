@@ -15,7 +15,7 @@ global.fetch = mockFetch
 
 beforeEach(() => {
   mockFetch.mockReset()
-  localStorage.setItem('aiciv-portal-token', 'test-token')
+  localStorage.setItem('pyonair-portal-token', 'test-token')
 })
 
 const jsonOk = (data: unknown) => ({

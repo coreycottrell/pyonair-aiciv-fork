@@ -73,8 +73,8 @@ export function Header() {
   return (
     <header className="header">
       <div className="header-left">
-        <a href="https://ai-civ.com" target="_blank" rel="noopener noreferrer" className="header-brand-link">
-          <h1 className="header-title">{civName || 'AiCIV'}</h1>
+        <a href="https://pyonair.com" target="_blank" rel="noopener noreferrer" className="header-brand-link">
+          <h1 className="header-title">{civName || 'Pyonair'}</h1>
         </a>
         <span className="header-subtitle">Portal</span>
       </div>

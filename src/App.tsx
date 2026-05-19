@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState, useCallback } from 'react'
 import { HashRouter, Routes, Route, useNavigate } from 'react-router-dom'
-// Witness extension registry — Witness-only routes layered on top of base portal
-import { WITNESS_ROUTES } from './extensions'
+// Pyonair extension registry — Pyonair-only routes layered on top of base portal
+import { PYONAIR_ROUTES } from './extensions'
 import { AuthGuard } from './components/auth/AuthGuard'
 import { ClaudeAuthFlow } from './components/auth/ClaudeAuthFlow'
 import { AppShell } from './components/layout/AppShell'
@@ -52,8 +52,8 @@ function AuthenticatedApp() {
         <Route path="/triad" element={<TriadView />} />
         <Route path="/status" element={<StatusView />} />
         <Route path="/settings" element={<SettingsView />} />
-        {/* Witness extensions — lazy-loaded, only present in Witness's local build */}
-        {WITNESS_ROUTES.map(r => {
+        {/* Pyonair extensions — lazy-loaded, only present in Pyonair's local build */}
+        {PYONAIR_ROUTES.map(r => {
           const Panel = lazy(r.component)
           return <Route key={r.path} path={r.path} element={<Suspense fallback={null}><Panel /></Suspense>} />
         })}

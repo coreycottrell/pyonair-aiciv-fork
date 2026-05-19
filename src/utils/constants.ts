@@ -1,6 +1,6 @@
-export const AUTH_TOKEN_KEY = 'aiciv-portal-token'
-export const THEME_KEY = 'aiciv-theme'
-export const SETTINGS_KEY = 'aiciv-settings'
+export const AUTH_TOKEN_KEY = 'pyonair-portal-token'
+export const THEME_KEY = 'pyonair-theme'
+export const SETTINGS_KEY = 'pyonair-settings'
 
 export const DEFAULT_QUICKFIRE_PILLS = [
   'Status report',

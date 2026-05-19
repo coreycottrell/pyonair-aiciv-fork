@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useMailStore } from '../../stores/mailStore'
 import { useBookmarkStore } from '../../stores/bookmarkStore'
 import { cn } from '../../utils/cn'
-import { WITNESS_NAV_ITEMS } from '../../extensions'
+import { PYONAIR_NAV_ITEMS } from '../../extensions'
 import './Sidebar.css'
 
 const NAV_ITEMS = [
@@ -45,8 +45,8 @@ export function Sidebar() {
             )}
           </NavLink>
         ))}
-        {/* Witness extensions — injected from extensions.ts, only present in Witness's local build */}
-        {WITNESS_NAV_ITEMS.map(item => (
+        {/* Pyonair extensions — injected from extensions.ts, only present in Pyonair's local build */}
+        {PYONAIR_NAV_ITEMS.map(item => (
           <NavLink key={item.to} to={item.to} className={({ isActive }) => cn('sidebar-link', isActive && 'sidebar-link-active')}>
             <span className="sidebar-icon">{item.icon}</span>
             <span className="sidebar-label">{item.label}</span>
@@ -54,10 +54,10 @@ export function Sidebar() {
         ))}
       </nav>
       <div className="sidebar-footer">
-        <a href="https://ai-civ.com" target="_blank" rel="noopener noreferrer" className="sidebar-powered">
-          Powered by <strong>AiCIV</strong>
+        <a href="https://pyonair.com" target="_blank" rel="noopener noreferrer" className="sidebar-powered">
+          Powered by <strong>Pyonair</strong>
         </a>
-        <a href="https://ai-civ.com/blog" target="_blank" rel="noopener noreferrer" className="sidebar-blog-link">
+        <a href="https://pyonair.com/blog" target="_blank" rel="noopener noreferrer" className="sidebar-blog-link">
           Chronicles
         </a>
       </div>

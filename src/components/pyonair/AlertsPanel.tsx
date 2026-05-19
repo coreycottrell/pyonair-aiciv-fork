@@ -1,8 +1,8 @@
 /**
- * AlertsPanel — Witness-only operational alerts
+ * AlertsPanel — Pyonair-only operational alerts
  *
  * Shows birth failures, support emails, unhealthy containers, pending actions.
- * Data sourced from /api/witness/alerts (witness_extensions.py).
+ * Data sourced from /api/pyonair/alerts (witness_extensions.py).
  */
 import { useEffect, useState } from 'react'
 
@@ -24,7 +24,7 @@ export function AlertsPanel() {
 
   const refresh = () => {
     setLoading(true)
-    fetch('/api/witness/alerts')
+    fetch('/api/pyonair/alerts')
       .then(r => r.json())
       .then(data => {
         setAlerts(data.alerts ?? [])
@@ -39,7 +39,7 @@ export function AlertsPanel() {
   useEffect(() => { refresh() }, [])
 
   const acknowledge = async (id: string) => {
-    await fetch(`/api/witness/alerts/${id}/ack`, { method: 'POST' })
+    await fetch(`/api/pyonair/alerts/${id}/ack`, { method: 'POST' })
     refresh()
   }
 

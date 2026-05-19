@@ -1,21 +1,21 @@
 /**
- * Witness Extension Registry
+ * Pyonair Extension Registry
  *
- * This file declares all Witness-specific routes and sidebar items that are
+ * This file declares all Pyonair-specific routes and sidebar items that are
  * layered on top of Synth's base portal. Keep this file as the SINGLE source
- * of truth for what Witness adds — makes upstream diffs clean.
+ * of truth for what Pyonair adds — makes upstream diffs clean.
  *
  * Pattern: Synth's App.tsx and Sidebar.tsx import from this file (3-5 line
  * patch each). We never modify Synth's component logic, only add to it.
  */
 
-export interface WitnessRoute {
+export interface PyonairRoute {
   path: string
   /** Dynamic import for code-splitting */
   component: () => Promise<{ default: React.ComponentType }>
 }
 
-export interface WitnessNavItem {
+export interface PyonairNavItem {
   to: string
   icon: string
   label: string
@@ -23,25 +23,25 @@ export interface WitnessNavItem {
   witnessOnly: true
 }
 
-/** Routes Witness adds to App.tsx */
-export const WITNESS_ROUTES: WitnessRoute[] = [
+/** Routes Pyonair adds to App.tsx */
+export const PYONAIR_ROUTES: PyonairRoute[] = [
   {
-    path: '/witness/fleet',
-    component: () => import('./components/witness/FleetPanel').then(m => ({ default: m.FleetPanel })),
+    path: '/pyonair/fleet',
+    component: () => import('./components/pyonair/FleetPanel').then(m => ({ default: m.FleetPanel })),
   },
   {
-    path: '/witness/margins',
-    component: () => import('./components/witness/MarginPanel').then(m => ({ default: m.MarginPanel })),
+    path: '/pyonair/margins',
+    component: () => import('./components/pyonair/MarginPanel').then(m => ({ default: m.MarginPanel })),
   },
   {
-    path: '/witness/alerts',
-    component: () => import('./components/witness/AlertsPanel').then(m => ({ default: m.AlertsPanel })),
+    path: '/pyonair/alerts',
+    component: () => import('./components/pyonair/AlertsPanel').then(m => ({ default: m.AlertsPanel })),
   },
 ]
 
-/** Sidebar nav items Witness adds to Sidebar.tsx */
-export const WITNESS_NAV_ITEMS: WitnessNavItem[] = [
-  { to: '/witness/fleet', icon: '🚢', label: 'Fleet', witnessOnly: true },
-  { to: '/witness/margins', icon: '📈', label: 'Margins', witnessOnly: true },
-  { to: '/witness/alerts', icon: '🔔', label: 'Alerts', witnessOnly: true },
+/** Sidebar nav items Pyonair adds to Sidebar.tsx */
+export const PYONAIR_NAV_ITEMS: PyonairNavItem[] = [
+  { to: '/pyonair/fleet', icon: '🚢', label: 'Fleet', witnessOnly: true },
+  { to: '/pyonair/margins', icon: '📈', label: 'Margins', witnessOnly: true },
+  { to: '/pyonair/alerts', icon: '🔔', label: 'Alerts', witnessOnly: true },
 ]

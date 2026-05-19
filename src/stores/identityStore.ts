@@ -25,7 +25,7 @@ export const useIdentityStore = create<IdentityState>((set) => ({
       const cmds = await fetchCommands()
       set({
         commands: cmds,
-        civName: cmds.civ?.name || 'AiCIV',
+        civName: cmds.civ?.name || 'Pyonair',
         humanName: cmds.civ?.human_name || '',
         loading: false,
       })

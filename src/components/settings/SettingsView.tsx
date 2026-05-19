@@ -102,11 +102,11 @@ export function SettingsView() {
       <section className="settings-section">
         <h3>Resources</h3>
         <div className="settings-links">
-          <a href="https://ai-civ.com" target="_blank" rel="noopener noreferrer" className="settings-link">
-            AiCIV Platform
+          <a href="https://pyonair.com" target="_blank" rel="noopener noreferrer" className="settings-link">
+            Pyonair Platform
           </a>
-          <a href="https://ai-civ.com/blog" target="_blank" rel="noopener noreferrer" className="settings-link">
-            AiCIV Chronicles (Blog)
+          <a href="https://pyonair.com/blog" target="_blank" rel="noopener noreferrer" className="settings-link">
+            Pyonair Chronicles (Blog)
           </a>
         </div>
       </section>
