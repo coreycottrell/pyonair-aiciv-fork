@@ -11,7 +11,7 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  padding: 12px 8px;
+  padding: 4px 8px;
   gap: 2px;
   flex: 1;
 }
@@ -49,14 +49,27 @@
 }
 
 .sidebar-icon {
-  font-size: 18px;
   width: 24px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+.sidebar-icon svg {
+  display: block;
+}
+
+.sidebar-link-active .sidebar-icon {
+  color: var(--accent-primary);
 }
 
 .sidebar-label {
   flex: 1;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .sidebar-badge {
@@ -71,6 +84,91 @@
   align-items: center;
   justify-content: center;
   padding: 0 5px;
+}
+
+/* Section dividers */
+.sidebar-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 4px 14px;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  padding: 4px 14px 2px;
+}
+
+.sidebar-section-admin {
+  opacity: 0.85;
+}
+
+/* Install banner */
+.sidebar-install-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin: 4px 8px;
+  background: rgba(230, 57, 70, 0.05);
+  border: 1px solid rgba(230, 57, 70, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.sidebar-install-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.sidebar-install-text strong {
+  color: #1a1a1a;
+}
+
+.sidebar-install-text span {
+  color: #666;
+  font-size: 11px;
+}
+
+.sidebar-install-btn {
+  background: #E63946;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sidebar-install-btn:hover {
+  background: #d32f3b;
+}
+
+.sidebar-install-dismiss {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.sidebar-install-dismiss:hover {
+  color: #333;
 }
 
 /* Footer */

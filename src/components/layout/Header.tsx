@@ -49,9 +49,16 @@ function CtxRing({ pct }: { pct: number }) {
   )
 }
 
+interface Branding {
+  display_name: string
+  logo_url: string
+  platform: string
+}
+
 export function Header() {
   const { civName, status } = useIdentityStore()
   const [ctx, setCtx] = useState<ContextSnapshot | null>(null)
+  const [branding, setBranding] = useState<Branding>({ display_name: '', logo_url: '/pyonair-logo.svg', platform: 'Pyonair' })
 
   const fetchCtx = useCallback(async () => {
     try {
@@ -68,15 +75,26 @@ export function Header() {
     return () => clearInterval(interval)
   }, [fetchCtx])
 
+  useEffect(() => {
+    apiGet<Branding>('/api/branding').then(b => {
+      setBranding(b)
+      document.title = b.display_name || 'Pyonair'
+    }).catch(() => {})
+  }, [])
+
   const claudeStatus = status?.claude_running ? 'online' : 'offline'
 
   return (
     <header className="header">
       <div className="header-left">
-        <a href="https://pyonair.com" target="_blank" rel="noopener noreferrer" className="header-brand-link">
-          <h1 className="header-title">{civName || 'Pyonair'}</h1>
-        </a>
-        <span className="header-subtitle">Portal</span>
+        <div className="header-brand-stack">
+          <a href="https://pyonair.com" target="_blank" rel="noopener noreferrer" className="header-brand-link">
+            <img src={branding.logo_url} alt={branding.platform || 'Pyonair'} className="header-logo" />
+          </a>
+          {branding.display_name && (
+            <span className="header-display-name">{branding.display_name}</span>
+          )}
+        </div>
       </div>
       <div className="header-right">
         {ctx != null && (

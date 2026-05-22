@@ -10,7 +10,9 @@ import { CalendarView } from './components/calendar/CalendarView'
 import { MailView } from './components/agentmail/MailView'
 import { SettingsView } from './components/settings/SettingsView'
 import { TerminalView } from './components/terminal/TerminalView'
+import { ConsoleView } from './components/console/ConsoleView'
 import { TeamsView } from './components/teams/TeamsView'
+const TeamChatView = () => <iframe src="https://forge-jordannah.ai-civ.com/team-chat" className="teamchat-iframe" />
 import { BookmarksView } from './components/bookmarks/BookmarksView'
 import { StatusView } from './components/status/StatusView'
 import { ContextView } from './components/context/ContextView'
@@ -19,6 +21,7 @@ import { DocsView } from './components/docs/DocsView'
 import { SheetsView } from './components/sheets/SheetsView'
 import { PointsView } from './components/points/PointsView'
 import { TriadView } from './components/triad/TriadView'
+import { GuideView } from './components/guide/GuideView'
 import { useIdentityStore } from './stores/identityStore'
 import { useSettingsStore } from './stores/settingsStore'
 import { apiGet } from './api/client'
@@ -39,8 +42,10 @@ function AuthenticatedApp() {
     <Routes>
       <Route element={<AppShell />}>
         <Route path="/" element={<ChatView />} />
-        <Route path="/terminal" element={<TerminalView />} />
+        <Route path="/terminal" element={<ConsoleView />} />
+        <Route path="/console" element={<ConsoleView />} />
         <Route path="/teams" element={<TeamsView />} />
+        <Route path="/teamchat" element={<TeamChatView />} />
         <Route path="/orgchart" element={<OrgChartView />} />
         <Route path="/calendar" element={<CalendarView />} />
         <Route path="/mail" element={<MailView />} />
@@ -52,6 +57,7 @@ function AuthenticatedApp() {
         <Route path="/triad" element={<TriadView />} />
         <Route path="/status" element={<StatusView />} />
         <Route path="/settings" element={<SettingsView />} />
+        <Route path="/guide" element={<GuideView />} />
         {/* Pyonair extensions — lazy-loaded, only present in Pyonair's local build */}
         {PYONAIR_ROUTES.map(r => {
           const Panel = lazy(r.component)

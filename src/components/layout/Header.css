@@ -12,30 +12,31 @@
 
 .header-left {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+}
+
+.header-brand-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
 }
 
 .header-brand-link {
   text-decoration: none !important;
 }
 
-.header-title {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.header-logo {
+  height: 22px;
+  width: auto;
+  display: block;
 }
 
-.header-subtitle {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  font-weight: 500;
+.header-display-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .header-right {

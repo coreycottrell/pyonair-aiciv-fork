@@ -48,6 +48,124 @@
   color: var(--text-primary);
 }
 
+/* Branding */
+.branding-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.branding-logo-box {
+  width: 80px;
+  height: 80px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.branding-logo-img {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.branding-logo-placeholder {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.branding-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.branding-upload-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-on-accent);
+  background: var(--accent-primary);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+  cursor: pointer;
+}
+
+.branding-upload-btn:hover {
+  background: var(--accent-primary-hover);
+}
+
+.branding-upload-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.branding-hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.branding-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.branding-name-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.branding-name-input {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  width: 200px;
+}
+
+.branding-name-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.branding-save-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.branding-save-btn:hover:not(:disabled) {
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.branding-save-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.branding-msg {
+  font-size: 12px;
+  color: var(--status-success);
+  margin-top: 8px;
+}
+
 /* Theme toggle */
 .theme-toggle {
   display: flex;

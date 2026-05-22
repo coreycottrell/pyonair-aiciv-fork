@@ -1,0 +1,208 @@
+.console-view {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.console-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.console-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.console-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 4px 0 0;
+}
+
+.console-filters {
+  display: flex;
+  gap: 4px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.console-filter-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.console-filter-btn:hover {
+  background: var(--bg-hover);
+}
+
+.console-filter-active {
+  background: var(--accent-primary) !important;
+  color: var(--text-on-accent);
+}
+
+/* Grid */
+.console-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* Card */
+.console-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg, 12px);
+  padding: 20px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.console-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.console-card-soon {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.console-card-soon:hover {
+  transform: none;
+  border-color: var(--border-subtle);
+  box-shadow: none;
+}
+
+.console-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.console-card-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+}
+
+.console-product-icon {
+  display: block;
+}
+
+.console-card-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 4px 0 0;
+  color: var(--text-primary);
+}
+
+.console-card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  flex: 1;
+}
+
+.console-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+/* Tier badges */
+.console-tier {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.console-tier-standard {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.console-tier-professional {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.console-tier-enterprise {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+/* Status dot */
+.console-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.console-status-online {
+  background: #4caf50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
+}
+
+.console-status-offline {
+  background: #f44336;
+}
+
+.console-status-coming_soon {
+  background: #ff9800;
+}
+
+/* Launch link */
+.console-launch {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-primary);
+}
+
+.console-coming-soon {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .console-view {
+    padding: 16px;
+  }
+  .console-grid {
+    grid-template-columns: 1fr;
+  }
+  .console-header {
+    flex-direction: column;
+  }
+}

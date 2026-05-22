@@ -23,7 +23,10 @@ export function MarginPanel() {
 
   useEffect(() => {
     fetch('/api/pyonair/margins')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error(`Margins API returned ${r.status}`)
+        return r.json()
+      })
       .then(data => {
         setEntries(data.entries ?? [])
         setTotals(data.totals ?? null)

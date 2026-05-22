@@ -5,6 +5,19 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/index-PYO2024.js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.names?.[0]?.endsWith('.css')) {
+            return 'assets/index-PYO2024.css'
+          }
+          return 'assets/[name]-[hash][extname]'
+        },
+      },
+    },
+  },
   server: {
     proxy: {
       '/api': {

@@ -23,7 +23,10 @@ export function FleetPanel() {
 
   useEffect(() => {
     fetch('/api/pyonair/fleet')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error(`Fleet API returned ${r.status}`)
+        return r.json()
+      })
       .then(data => {
         setContainers(data.containers ?? [])
         setLoading(false)

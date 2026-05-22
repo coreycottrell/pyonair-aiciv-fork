@@ -22,3 +22,17 @@
     padding-bottom: var(--mobile-nav-height);
   }
 }
+
+/* Team Chat iframe — fills available space */
+.teamchat-iframe {
+  width: 100%;
+  height: calc(100vh - var(--header-height, 56px));
+  border: none;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .teamchat-iframe {
+    height: calc(100vh - var(--header-height, 56px) - var(--mobile-nav-height, 60px));
+  }
+}

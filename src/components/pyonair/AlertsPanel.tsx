@@ -25,7 +25,10 @@ export function AlertsPanel() {
   const refresh = () => {
     setLoading(true)
     fetch('/api/pyonair/alerts')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error(`Alerts API returned ${r.status}`)
+        return r.json()
+      })
       .then(data => {
         setAlerts(data.alerts ?? [])
         setLoading(false)

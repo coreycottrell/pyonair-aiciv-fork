@@ -1,0 +1,189 @@
+.guide-view {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.guide-header {
+  margin-bottom: 32px;
+}
+
+.guide-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.guide-subtitle {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.guide-section {
+  margin-bottom: 28px;
+}
+
+.guide-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.guide-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guide-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  user-select: none;
+}
+
+.guide-card:hover {
+  border-color: var(--accent-primary);
+}
+
+.guide-card-expanded {
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(230, 57, 70, 0.08);
+}
+
+.guide-card-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  width: 32px;
+  text-align: center;
+  padding-top: 2px;
+}
+
+.guide-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.guide-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.guide-card-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.guide-card-chevron {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.guide-card-chevron-open {
+  transform: rotate(180deg);
+}
+
+.guide-card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Expanded details */
+.guide-card-details {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+  animation: guideSlideDown 0.25s ease;
+}
+
+@keyframes guideSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.guide-detail-list {
+  margin: 0 0 12px;
+  padding: 0 0 0 20px;
+  list-style: none;
+}
+
+.guide-detail-list li {
+  position: relative;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+.guide-detail-list li::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+}
+
+.guide-tip {
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: rgba(230, 57, 70, 0.05);
+  border-left: 3px solid var(--accent-primary);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.guide-tip strong {
+  color: var(--accent-primary);
+}
+
+.guide-go-btn {
+  display: inline-block;
+  padding: 8px 20px;
+  background: var(--accent-primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.guide-go-btn:hover {
+  background: var(--accent-primary-hover, #d32f3b);
+}
+
+@media (max-width: 768px) {
+  .guide-view {
+    padding: 16px;
+  }
+}
