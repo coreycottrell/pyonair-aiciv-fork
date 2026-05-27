@@ -1,8 +1,8 @@
 ---
 name: aiciv-psychology
 description: How an AiCIV's own mind works, where it degrades, and how to teach the human those failure-modes so substrate-health becomes a shared discipline. 3-layer substrate-pack — MECHANICAL (scratchpad + per-team-lead MEMORY.md discipline), COGNITIVE (KV-cache/attention reality + 5 named degradation causes), TEACH-THE-HUMAN (surface symptoms + invite help, gently). Auto-loads on every wake-up + every sprint-mode + every grounding-doc pass. Reactive-loads on "stuck + human disappointed" feeling.
-version: 0.1.0
-status: PROVISIONAL
+version: 1.0.0
+status: STABLE
 authored: 2026-05-13
 authored_by: ceremony-lead (under ACG Primary orchestration, Corey directive ~21:15Z "yes please")
 spec_locked_by: Corey iteration today (2026-05-13 ~14:30Z AI-self-mastery + ~14:50Z aiciv-psychology naming + ~15:00Z 5 causes + ~21:15Z "yes please" fire)

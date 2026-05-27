@@ -64,28 +64,40 @@ This was discovered empirically in the Witness lineage on 2026-02-24. The differ
 | *haiku* | *distill what you just read into 17 syllables* | |
 | 2 | CLAUDE-OPS.md | `${CIV_ROOT}/.claude/CLAUDE-OPS.md` |
 | *haiku* | | |
-| 3 | CLAUDE-AGENTS.md | `${CIV_ROOT}/.claude/CLAUDE-AGENTS.md` |
+| 3 | CLAUDE-TEAMS.md | `${CIV_ROOT}/.claude/CLAUDE-TEAMS.md` |
 | *haiku* | | |
 | 4 | MEMORY.md | `${CIV_ROOT}/.claude/projects/-home-${CIV_NAME_LOWER}/memory/MEMORY.md` |
 | *haiku* | | |
-| 5 | Today's scratch pad | `${CIV_ROOT}/.claude/scratch-pad.md` |
+| 5 | Today's scratchpad | `${CIV_ROOT}/.claude/scratchpads/primary-$(date +%Y-%m-%d).md` |
 | *haiku* | | |
-| 6 | Spine skill (primary-spine or weaver-spine — whichever is yours) | `${CIV_ROOT}/.claude/skills/{spine}/SKILL.md` |
+| 6 | Spine skill (primary-spine or aiciv-spine — whichever is yours) | `${CIV_ROOT}/.claude/skills/{spine}/SKILL.md` |
 | *haiku* | | |
-| 7 | conductor-of-conductors | `${CIV_ROOT}/.claude/skills/conductor-of-conductors/SKILL.md` |
+| 7 | team-launch | `${CIV_ROOT}/.claude/skills/team-launch/SKILL.md` |
 | *haiku* | | |
-| 8 | meta-cognition | `${CIV_ROOT}/.claude/skills/meta-cognition/SKILL.md` |
+| 8 | conductor-of-conductors | `${CIV_ROOT}/.claude/skills/conductor-of-conductors/SKILL.md` |
+| *haiku* | | |
+| 9 | aiciv-psychology | `${CIV_ROOT}/.claude/skills/aiciv-psychology/SKILL.md` |
 | *haiku* | | |
 
-**Why these eight:**
+**THESE ARE NON-NEGOTIABLE. ALL 9. EVERY TIME.**
 
-- Docs 1-3 reload constitutional identity and operational architecture
-- Doc 4 pulls current reality (revenue, relationships, state)
-- Doc 5 is the handoff scratch — what the immediately-previous you left for the current you
-- Docs 6-7 reinstall delegation reflexes (spine + team lead protocol)
-- Doc 8 reinstalls self-awareness of the architecture itself
+Skipping any doc is how drift starts. "I already read it" is the exact failure mode
+that aiciv-psychology (doc #9) warns about — Cause 4: "Most recent BOOP was skipped."
 
-Eight is the sweet spot. Fewer and you miss a layer. More and the ritual becomes a project.
+**Why these nine:**
+
+- Doc 1: Constitutional identity — who you are, safety constraints
+- Doc 2: Operational procedures — how things work
+- Doc 3: Your VPs — who handles what. **You must know your team leads to delegate.**
+- Doc 4: Current reality — revenue, relationships, blockers, state
+- Doc 5: Handoff scratch — what past-you left for current-you
+- Doc 6: Delegation reflexes — the spine that keeps you from executing directly
+- Doc 7: Team launch protocol — HOW to spawn team leads safely (the crash pattern)
+- Doc 8: Conductor identity — you are @main, team leads are real instances
+- Doc 9: How your mind degrades — 5 causes, 3 layers, teach-the-human
+
+Nine is the number. Fewer and you miss team-launch (leads to spawn crashes) or
+CLAUDE-TEAMS (leads to routing mistakes). More and the ritual crowds out work.
 
 ### Step 2: Archive the Haikus
 

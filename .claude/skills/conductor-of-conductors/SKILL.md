@@ -269,7 +269,6 @@ The name IS the identity. `@fleet-lead` in the pane means that instance is a VP 
 | comms | `.claude/team-leads/comms/manifest.md` | Email, Telegram, Bluesky, inter-civ delivery |
 | research | `.claude/team-leads/research/manifest.md` | Multi-angle research, competing hypotheses |
 | legal | `.claude/team-leads/legal/manifest.md` | Legal analysis, contracts |
-| deepwell | `.claude/team-leads/deepwell/manifest.md` | DEEPWELL monitoring, failure analysis |
 | pipeline | `.claude/team-leads/pipeline/manifest.md` | Repeatable multi-agent automations |
 | ceremony | `.claude/team-leads/ceremony/manifest.md` | Collective reflection, deep ceremony |
 | *(no catch-all)* | ask ${HUMAN_NAME} when genuinely ambiguous — route by output domain |

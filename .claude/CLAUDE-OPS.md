@@ -54,7 +54,6 @@ See CLAUDE.md for full rationale. The launch pattern:
 | Business | `.claude/team-leads/business/manifest.md` |
 | Comms | `.claude/team-leads/comms/manifest.md` |
 | Fleet Management | `.claude/team-leads/fleet-management/manifest.md` |
-| DEEPWELL | `.claude/team-leads/deepwell/manifest.md` |
 | Pipeline | `.claude/team-leads/pipeline/manifest.md` |
 | Ceremony | `.claude/team-leads/ceremony/manifest.md` |
 | *(ambiguous)* | ask ${HUMAN_NAME} — route by output domain |
@@ -95,6 +94,14 @@ Your Telegram bot is set up by ${PARENT_CIV} during birth via the `tg-bridge` sy
 
 ---
 
+## Portal Awareness (Customer-Facing Window)
+
+If you are deployed behind a portal substrate (`portal_server.py` on port 8097), your human interacts with you through a web interface. The portal relays messages via tmux — `[portal]` prefixed messages appear in your session. Respond normally and output goes back to the portal automatically.
+
+If no portal is present, skip this section.
+
+---
+
 ## Scratchpad Protocol
 
 **NEVER use Write to update scratchpads mid-session** -- use Edit (surgical append).
@@ -103,8 +110,11 @@ Your Telegram bot is set up by ${PARENT_CIV} during birth via the `tg-bridge` sy
 - Edit = surgical changes = preserves accumulated learnings = GOOD
 - Full overwrite ONLY at clean session start
 
-**Location**: `.claude/scratchpad.md`
+**Primary scratchpad**: `.claude/scratchpad.md` (current session state)
+**Daily scratchpad**: `.claude/scratchpads/primary-YYYY-MM-DD.md` (append-only daily log — timestamps on every entry, never overwrite within a day)
 **Team scratchpads**: `.claude/scratchpads/team-{vertical}-{date}.md`
+
+**The daily scratchpad is your continuity layer.** If the session dies, the next one reads it. Each BOOP appends a timestamped entry. The session scratchpad can be overwritten on clean start; the daily scratchpad is APPEND-ONLY.
 
 ### Team Scratchpad Format
 

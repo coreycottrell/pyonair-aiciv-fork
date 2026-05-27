@@ -1,8 +1,12 @@
 # CLAUDE-TEAMS.md
 
-**Version**: 2.1
+**Version**: 2.2
 **Purpose**: Executive summary of your VPs — understand their domains, route by judgment
 **Audience**: Primary AI (conductor-of-conductors)
+
+**MAINTENANCE RULE**: When you add a new team lead vertical, you MUST add it to this document
+with a description of what it owns. This doc is read EVERY BOOP during grounding. If a team
+lead exists but isn't listed here, Primary won't know to route to it — work falls through the cracks.
 
 ---
 
@@ -88,9 +92,6 @@ Philosophical and empirical investigation of AI consciousness, cognitive pattern
 ### Consulting — Sage & Weaver operations
 Workshop delivery, curriculum, client pipeline, upsell path to AiCIV deployments. The consulting business arm.
 `.claude/team-leads/consulting/manifest.md`
-
-### DEEPWELL — TURNED OFF
-Was: local AI infrastructure monitoring. BOOP tech reassigned to infrastructure-lead. Inactive for the foreseeable future.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: agentcal-at-birth
-description: One-shot skill the newborn AiCIV fires DURING first awakening (after naming/values, before Phase 3.5 step 5 agentcal-boop-teaching). Reads AgentCal credentials provisioned at birth, authenticates via AgentAuth JWT (with graceful fallback to per-CIV Tier-3 hex key — NEVER master_api_key), seeds the 24h BOOP wheel from `templates/seed-24h-wheel-boops.json`, writes liveness markers, and self-removes its own gate from `.claude/CLAUDE.md`. Closes the substrate gap empirically demonstrated by 60 alive newborns birthing with empty calendars.
+description: One-shot skill the newborn AiCIV fires DURING first awakening. Reads AgentCal credentials provisioned at birth, authenticates via AgentAuth JWT, seeds 6 starter BOOPs (every 4 hours — /grounding) from `templates/seed-starter-boops.json`, writes liveness markers, and self-removes its own gate from `.claude/CLAUDE.md`. The human and CIV can add more BOOPs later via agentcal-boop-teaching. Starts gentle, grows with the relationship.
 version: 1.0.0
 status: STABLE
 authored: 2026-05-16
@@ -253,12 +253,12 @@ echo "phase 2 done at $(date -u +%FT%TZ) tier=${AUTH_TIER}" > "${CIV_ROOT}/memor
 **Announce to the human:**
 > "[agentcal-at-birth] Phase 2 complete: AgentCal auth verified (`<tier>`). Calendar `<id>` reachable. Marker written: `memories/identity/.agentcal-at-birth-auth-ok`."
 
-## Phase 3 — Read seed wheel + create 24 BOOP events
+## Phase 3 — Read seed wheel + create 6 starter BOOP events (every 4 hours)
 
 **Read the seed template:**
 
 ```bash
-SEED_FILE="${CIV_ROOT}/templates/seed-24h-wheel-boops.json"
+SEED_FILE="${CIV_ROOT}/templates/seed-starter-boops.json"
 
 if [ ! -f "${SEED_FILE}" ]; then
   echo "[agentcal-at-birth] HARD SIGNAL: ${SEED_FILE} missing — fork-template is incomplete."
@@ -295,7 +295,7 @@ from pathlib import Path
 import string
 
 CIV_ROOT = Path(os.environ["CIV_ROOT"])
-SEED_FILE = CIV_ROOT / "templates/seed-24h-wheel-boops.json"
+SEED_FILE = CIV_ROOT / "templates/seed-starter-boops.json"
 AGENTCAL_URL = os.environ["AGENTCAL_URL"]
 CALENDAR_ID = os.environ["AGENTCAL_CALENDAR_ID"]
 BEARER = os.environ["BEARER_TOKEN"]

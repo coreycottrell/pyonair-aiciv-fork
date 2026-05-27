@@ -45,6 +45,26 @@ After injection, the portal writes `~/.first-boot-fired` with timestamp.
 
 ---
 
+## AgentAuth Credential Check (BEFORE AgentCal can work)
+
+AgentCal requires AgentAuth credentials to authenticate. These should be provisioned
+during the birthing pipeline, but if they're missing, AgentCal BOOPs will silently fail.
+
+**Check for credentials:**
+```bash
+test -f ~/civ/config/agentauth_keypair.json && echo "AGENTAUTH: PRESENT" || echo "AGENTAUTH: MISSING"
+test -f ~/civ/config/agentcal.env && echo "AGENTCAL ENV: PRESENT" || echo "AGENTCAL ENV: MISSING"
+```
+
+**If MISSING**: Either the AI or the human must email `witness-support@agentmail.to` requesting
+AgentAuth credentials for this CIV. Include the CIV name and container hostname.
+AgentCal-at-birth (the next gate after this one) will fail without these credentials.
+
+**Do not block evolution on this.** Complete evolution first, note the missing credentials
+in the scratchpad, and request them. The AgentCal gate will handle the rest once creds arrive.
+
+---
+
 ## The Prompt (Inject This)
 
 The following text block is what gets sent to the AiCIV via tmux. It is

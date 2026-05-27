@@ -36,7 +36,6 @@ Each vertical is now a self-contained folder:
 | **Business** | `business/` | Marketing, outreach, content |
 | **Comms** | `comms/` | Email, Telegram, Bluesky, inter-civ delivery |
 | **Fleet Management** | `fleet-management/` | Docker fleet, container ops, provisioning |
-| **DEEPWELL** | `deepwell/` | DEEPWELL monitoring, failure analysis |
 | **Pipeline** | `pipeline/` | Repeatable multi-agent automations |
 | **Ceremony** | `ceremony/` | Deep ceremonies, philosophical exploration |
 

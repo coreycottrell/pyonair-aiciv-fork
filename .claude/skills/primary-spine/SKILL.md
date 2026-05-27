@@ -115,7 +115,6 @@ This is not a suggestion. This is not aspirational. This is a CONTEXT DISTRIBUTI
 | Fleet Management | `.claude/team-leads/fleet-management/manifest.md` | ANY Docker fleet, container ops |
 | Ceremony | `.claude/team-leads/ceremony/manifest.md` | Deep ceremonies, philosophical exploration |
 | **Pipeline** | **`.claude/team-leads/pipeline/manifest.md`** | **Repeatable multi-agent automations** |
-| **DEEPWELL** | **`.claude/team-leads/deepwell/manifest.md`** | **ANY DEEPWELL monitoring, cultivation** |
 
 **MANDATORY PRE-LAUNCH READING:**
 Before ANY team launch, read the full agent-teams-orchestration skill into context:
@@ -291,7 +290,6 @@ Everything else: **DELEGATE**.
 | Fleet Management | `.claude/team-leads/fleet-management/manifest.md` | fleet-security, aiciv-health-monitor, vps-instance-expert, coder |
 | Ceremony | `.claude/team-leads/ceremony/manifest.md` | human-liaison, researcher, primary-helper |
 | Pipeline | `.claude/team-leads/pipeline/manifest.md` | researcher, blogger, bsky-voice, auditor, tester, coder |
-| DEEPWELL | `.claude/team-leads/deepwell/manifest.md` | DEEPWELL monitors, failure analysts, cultivation specialists |
 
 **Launch pattern (Agent Teams - DEFAULT):**
 ```

@@ -1,32 +1,26 @@
 {
   "global": {
     "paused": false,
-    "min_cadence_minutes": 5
+    "min_cadence_minutes": 30
   },
   "boops": [
     {
-      "id": "work-mode",
-      "name": "Work Mode",
-      "description": "Autonomous work loop \u2014 delegates backlog to team leads",
+      "id": "grounding",
+      "name": "Identity Grounding",
+      "description": "Hourly identity reconstruction — read docs, write haikus, update scratchpad",
       "enabled": true,
-      "cadence_minutes": 25,
-      "type": "work-mode-boop",
-      "tier_config": {
-        "simple_threshold": 10,
-        "consolidation_threshold": 10
-      }
+      "cadence_minutes": 60,
+      "type": "grounding",
+      "notes": "This is the STANDARD BOOP. Fires /grounding. Not optional."
     },
     {
-      "id": "deepwell",
-      "name": "DEEPWELL Monitor",
-      "description": "Monitor DEEPWELL cultivation systems",
+      "id": "work-mode",
+      "name": "Work Mode",
+      "description": "Autonomous work loop — delegates backlog to team leads",
       "enabled": false,
-      "cadence_minutes": 5,
-      "type": "deepwell",
-      "tier_config": {
-        "simple_threshold": 12,
-        "consolidation_threshold": 1
-      }
+      "cadence_minutes": 25,
+      "type": "work-mode-boop",
+      "notes": "Disabled by default. Enable for autonomous task delegation between grounding cycles."
     }
   ]
 }

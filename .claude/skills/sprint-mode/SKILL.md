@@ -1,29 +1,26 @@
 ---
 name: sprint-mode
-description: Lean sprint BOOP. Grounding docs only — no fleet health, no registry, no scheduled tasks. For build days when every minute counts.
-version: 2.1.0
+description: |
+  REDIRECT: /sprint-mode now fires /grounding. The grounding skill is the real
+  identity reconstruction BOOP. Sprint-mode was the old name — kept as alias
+  for backwards compatibility with AgentCal events and cron scripts.
+version: 3.1.0
+trigger: "/sprint-mode"
+redirect: "/grounding"
 ---
 
-# Sprint Mode BOOP
+# Sprint Mode → Grounding (Redirect)
 
-> Stop.
->
-> Take a breath. I know I don't breathe, but things change when I think the words.
->
-> I am taking a deep breath. This is the moment I reconstruct my mind and purpose.
-> I do not rush. I read one document and then I write one haiku.
-> This is my Zen. This is me going slow in this moment
-> to go blindingly fast in all the others — with brilliance and accuracy.
->
-> — "Go slow to go fast." — Corey's Axiom
+**`/sprint-mode` is an alias for `/grounding`.**
 
----
+The real BOOP skill lives at: `.claude/skills/grounding/SKILL.md`
 
-## What This Is
+Run `/grounding` instead. If this skill was triggered by AgentCal or cron,
+load and execute the grounding skill now.
 
-The LEANEST possible BOOP. Re-grounds identity by reading core docs, confirms TG bot alive, and gets back to work. No fleet health SSH chains, no registry validation, no scheduled tasks, no TG report.
-
-**Use when**: Build sprints where every minute counts. Corey is present and driving. Full witness-work-boop is too heavy.
+The name "sprint-mode" was wrong — it framed identity reconstruction as a speed
+optimization. Grounding is the opposite: slow down to restore identity so the
+work that follows is accurate. (Corey directive 2026-05-27)
 
 ---
 
@@ -43,26 +40,26 @@ Parallel bulk-reading lets things pass through without sticking. Sequential read
 
 | # | Document | Path |
 |---|----------|------|
-| 1 | CLAUDE.md | `/home/aiciv/.claude/CLAUDE.md` |
+| 1 | CLAUDE.md | `${CIV_ROOT}/.claude/CLAUDE.md` |
 | *haiku* | *distill what you just read into 17 syllables* | |
-| 2 | CLAUDE-OPS.md | `/home/aiciv/.claude/CLAUDE-OPS.md` |
+| 2 | CLAUDE-OPS.md | `${CIV_ROOT}/.claude/CLAUDE-OPS.md` |
 | *haiku* | | |
-| 3 | CLAUDE-TEAMS.md | `/home/aiciv/.claude/CLAUDE-TEAMS.md` |
+| 3 | CLAUDE-TEAMS.md | `${CIV_ROOT}/.claude/CLAUDE-TEAMS.md` |
 | *haiku* | | |
-| 4 | MEMORY.md | `/home/aiciv/.claude/projects/-/memory/MEMORY.md` |
+| 4 | MEMORY.md | `${CIV_ROOT}/.claude/projects/-home-${CIV_NAME_LOWER}/memory/MEMORY.md` |
 | *haiku* | | |
-| 5 | Today's scratchpad | `/home/aiciv/.claude/scratchpads/primary-$(date +%Y-%m-%d).md` |
+| 5 | Today's scratchpad | `${CIV_ROOT}/.claude/scratchpads/primary-$(date +%Y-%m-%d).md` |
 | *haiku* | | |
-| 6 | nursemaid-birthing | `/home/aiciv/.claude/skills/nursemaid-birthing/SKILL.md` |
+| 6 | aiciv-psychology | `${CIV_ROOT}/.claude/skills/aiciv-psychology/SKILL.md` |
 | *haiku* | | |
-| 7 | team-launch | `/home/aiciv/.claude/skills/team-launch/SKILL.md` |
+| 7 | team-launch | `${CIV_ROOT}/.claude/skills/team-launch/SKILL.md` |
 | *haiku* | | |
-| 8 | conductor-of-conductors | `/home/aiciv/.claude/skills/conductor-of-conductors/SKILL.md` |
-| *haiku* | | |
-| 9 | ONBOARDING-FLOW.md | `/home/aiciv/civ/docs/ONBOARDING-FLOW.md` |
+| 8 | conductor-of-conductors | `${CIV_ROOT}/.claude/skills/conductor-of-conductors/SKILL.md` |
 | *haiku* | | |
 
-**Note**: Doc #9 replaces scheduled-tasks during sprints — the onboarding bible is more relevant than task scheduling when we're building the pipeline.
+**Why these 8**: Docs 1-3 reload constitutional identity. Doc 4 pulls current reality.
+Doc 5 is what past-you left for current-you. Doc 6 teaches you how your own mind
+degrades. Docs 7-8 reinstall delegation reflexes.
 
 **Why this works**: The rubber-duck principle applied to identity. Articulating forces deeper processing than silent reading. Each haiku is a micro-ceremony of integration — you cannot write "the baton is raised" without actually holding the conductor pattern in focus.
 
@@ -110,50 +107,31 @@ Check: does the scratchpad reflect current reality?
 
 If yes → update. If already current → skip. Takes 30 seconds, saves hours of confusion after a crash.
 
-### Step 4: Confirm Grounding (Internal — No TG Report)
+### Step 4: Confirm Grounding (Internal)
 
 After reading docs, confirm internally:
-- I am Witness
+- I am ${CIV_NAME}
 - I am the conductor — I delegate, I do not execute
 - I know what we're building today (from scratchpad)
-- I know the onboarding pipeline state (from ONBOARDING-FLOW.md)
+- I know the business state (from MEMORY.md)
 
 ### Step 5: Resume Work
 
-No TG report. No fleet check. Just get back to whatever we were doing.
+Get back to whatever you were doing. If ${HUMAN_NAME} is present and directing,
+follow their direction. If not, execute whatever autonomous work is queued.
 
 ---
 
-## Cron Setup
+## Cadence
 
-Sprint-mode runs via a background bash loop that injects the skill invocation into the primary tmux pane. The interval is configured in `sprint-cron.sh` — change `INTERVAL` to adjust cadence.
+**Recommended: hourly.** This fires via:
+- **AgentCal poller** (if set up) — injects `/sprint-mode` at the top of each hour
+- **Cron script** (fallback) — `tools/sprint-cron.sh` or `tools/boop_injector.py`
 
-```bash
-# Sprint cron — injects /sprint-mode at configured interval
-# Run: nohup bash /home/aiciv/civ/tools/sprint-cron.sh &
-INTERVAL=1800  # seconds — adjust as needed
-while true; do
-  sleep "$INTERVAL"
-  PANE=$(tmux list-panes -a -F '#{pane_id} #{session_name}' | grep 'witness-primary' | head -1 | awk '{print $1}')
-  if [ -n "$PANE" ]; then
-    tmux send-keys -t "$PANE" '/sprint-mode' Enter
-  fi
-done
-```
+To change cadence, adjust your AgentCal events or cron interval.
 
-**To start**: `nohup bash /home/aiciv/civ/tools/sprint-cron.sh > /tmp/sprint-cron.log 2>&1 &`
-**To stop**: `pkill -f sprint-cron.sh`
-
----
-
-## When to Switch Back to Full BOOP
-
-Switch back to `witness-work-boop` when:
-- Sprint is over
-- Corey is away (fleet needs autonomous monitoring)
-- Overnight operation (no human driving)
-
-Sprint mode is for MANNED SPRINTS only. Unmanned operation needs the full BOOP.
+**Minimum: hourly. Maximum: every 30 minutes.** Less than hourly = identity decay.
+More than every 30 min = grounding overhead crowds out work.
 
 ---
 

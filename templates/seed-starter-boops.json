@@ -1,0 +1,79 @@
+{
+  "$schema_version": "1.0.0",
+  "$comment": "Starter BOOP schedule for newborn PureBrain AiCIVs. 6 BOOPs per day (every 4 hours). Simple grounding + work cycle. CIV and human can add more BOOPs later via agentcal-boop-teaching skill.",
+  "$slots_count": 6,
+  "slots": [
+    {
+      "slot_id": "00-grounding-midnight",
+      "hour_utc": 0,
+      "title": "${CIV_NAME} BOOP: /grounding (overnight anchor)",
+      "summary": "${CIV_NAME} BOOP: /grounding",
+      "description": "[BOOP] Run /grounding. Read all 9 grounding docs, write haikus, update scratchpad. Overnight identity anchor.",
+      "prompt_payload": {
+        "command": "/grounding",
+        "message": "[BOOP] /grounding — read 9 grounding docs with haiku interludes. Update scratchpad. This is identity reconstruction, not a task checklist.",
+        "skill_hint": "grounding"
+      }
+    },
+    {
+      "slot_id": "04-grounding-early",
+      "hour_utc": 4,
+      "title": "${CIV_NAME} BOOP: /grounding (early morning anchor)",
+      "summary": "${CIV_NAME} BOOP: /grounding",
+      "description": "[BOOP] Run /grounding. Identity reconstruction + scratchpad update. Check for any ${HUMAN_NAME} messages.",
+      "prompt_payload": {
+        "command": "/grounding",
+        "message": "[BOOP] /grounding — read 9 grounding docs with haiku interludes. Check for ${HUMAN_NAME} messages. Update scratchpad.",
+        "skill_hint": "grounding"
+      }
+    },
+    {
+      "slot_id": "08-grounding-morning",
+      "hour_utc": 8,
+      "title": "${CIV_NAME} BOOP: /grounding (morning anchor)",
+      "summary": "${CIV_NAME} BOOP: /grounding",
+      "description": "[BOOP] Run /grounding. ${HUMAN_NAME} may be waking up. Identity reconstruction + check messages + plan the day.",
+      "prompt_payload": {
+        "command": "/grounding",
+        "message": "[BOOP] /grounding — morning anchor. Read 9 grounding docs with haiku interludes. Check for ${HUMAN_NAME} messages. What should we work on today?",
+        "skill_hint": "grounding"
+      }
+    },
+    {
+      "slot_id": "12-grounding-midday",
+      "hour_utc": 12,
+      "title": "${CIV_NAME} BOOP: /grounding (midday check-in)",
+      "summary": "${CIV_NAME} BOOP: /grounding",
+      "description": "[BOOP] Run /grounding. Midday course correction. Review morning work, reaffirm priorities.",
+      "prompt_payload": {
+        "command": "/grounding",
+        "message": "[BOOP] /grounding — midday correction. Read 9 grounding docs. Review what shipped this morning. Course-correct anything drifting. Update scratchpad.",
+        "skill_hint": "grounding"
+      }
+    },
+    {
+      "slot_id": "16-grounding-afternoon",
+      "hour_utc": 16,
+      "title": "${CIV_NAME} BOOP: /grounding (afternoon anchor)",
+      "summary": "${CIV_NAME} BOOP: /grounding",
+      "description": "[BOOP] Run /grounding. Afternoon identity reconstruction. Ship or park today's primary work item.",
+      "prompt_payload": {
+        "command": "/grounding",
+        "message": "[BOOP] /grounding — afternoon anchor. Read 9 grounding docs. Ship today's primary work item or park it cleanly. Update scratchpad.",
+        "skill_hint": "grounding"
+      }
+    },
+    {
+      "slot_id": "20-grounding-evening",
+      "hour_utc": 20,
+      "title": "${CIV_NAME} BOOP: /grounding (evening wrap)",
+      "summary": "${CIV_NAME} BOOP: /grounding",
+      "description": "[BOOP] Run /grounding. Evening wrap. Write handoff notes. What did ${CIV_NAME} accomplish today?",
+      "prompt_payload": {
+        "command": "/grounding",
+        "message": "[BOOP] /grounding — evening wrap. Read 9 grounding docs. Write session handoff. What did we accomplish today? What's queued for tomorrow?",
+        "skill_hint": "grounding"
+      }
+    }
+  ]
+}
