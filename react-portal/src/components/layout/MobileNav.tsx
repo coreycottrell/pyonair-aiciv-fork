@@ -16,7 +16,7 @@ const MORE_ITEMS = [
   { to: '/tgim', icon: '\u{1F3AF}', label: 'TGIM' },
   { to: '/orgchart', icon: '\u{1F3E2}', label: 'Org Chart' },
   { to: '/teams', icon: '\u{1F465}', label: 'Teams' },
-  { to: '/context', icon: '\u{1F9E0}', label: 'Context' },
+  { to: '/context', icon: '\u{1F9E0}', label: 'Memory' },
   { to: '/points', icon: '\u{2B50}', label: 'Points' },
   { to: '/docs', icon: '\u{1F4D6}', label: 'Docs' },
   { to: '/sheets', icon: '\u{1F4CA}', label: 'Sheets' },

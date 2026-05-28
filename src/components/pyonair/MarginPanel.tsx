@@ -22,7 +22,8 @@ export function MarginPanel() {
   const [totals, setTotals] = useState<{ revenue: number; cost: number; margin: number } | null>(null)
 
   useEffect(() => {
-    fetch('/api/pyonair/margins')
+    const token = localStorage.getItem('pyonair-portal-token')
+    fetch('/api/pyonair/margins', { headers: { Authorization: `Bearer ${token}` } })
       .then(r => {
         if (!r.ok) throw new Error(`Margins API returned ${r.status}`)
         return r.json()

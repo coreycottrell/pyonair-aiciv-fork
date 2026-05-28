@@ -22,9 +22,14 @@ export function AlertsPanel() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const authHeaders = () => {
+    const token = localStorage.getItem('pyonair-portal-token')
+    return { Authorization: `Bearer ${token}` }
+  }
+
   const refresh = () => {
     setLoading(true)
-    fetch('/api/pyonair/alerts')
+    fetch('/api/pyonair/alerts', { headers: authHeaders() })
       .then(r => {
         if (!r.ok) throw new Error(`Alerts API returned ${r.status}`)
         return r.json()
@@ -42,7 +47,7 @@ export function AlertsPanel() {
   useEffect(() => { refresh() }, [])
 
   const acknowledge = async (id: string) => {
-    await fetch(`/api/pyonair/alerts/${id}/ack`, { method: 'POST' })
+    await fetch(`/api/pyonair/alerts/${id}/ack`, { method: 'POST', headers: authHeaders() })
     refresh()
   }
 

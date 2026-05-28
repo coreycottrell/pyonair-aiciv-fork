@@ -67,7 +67,7 @@ export function ContextView() {
   if (error) {
     return (
       <div className="ctx-view">
-        <h2 className="ctx-title">Context Window</h2>
+        <h2 className="ctx-title">Memory</h2>
         <div className="ctx-error">{error}</div>
       </div>
     )
@@ -83,7 +83,7 @@ export function ContextView() {
 
   return (
     <div className="ctx-view">
-      <h2 className="ctx-title">Context Window</h2>
+      <h2 className="ctx-title">Memory</h2>
 
       {/* Hero gauge */}
       <div className="ctx-hero">

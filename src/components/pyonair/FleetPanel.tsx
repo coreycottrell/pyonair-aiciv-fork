@@ -22,7 +22,8 @@ export function FleetPanel() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/pyonair/fleet')
+    const token = localStorage.getItem('pyonair-portal-token')
+    fetch('/api/pyonair/fleet', { headers: { Authorization: `Bearer ${token}` } })
       .then(r => {
         if (!r.ok) throw new Error(`Fleet API returned ${r.status}`)
         return r.json()

@@ -105,7 +105,7 @@ export function StatusView() {
         </div>
 
         <div className="status-card">
-          <h3 className="status-card-title">Context Window</h3>
+          <h3 className="status-card-title">Memory</h3>
           <div className="status-card-body">
             <div className="status-ctx-bar">
               <div className="status-ctx-fill" style={{ width: `${Math.min(ctxPct, 100)}%` }} />
