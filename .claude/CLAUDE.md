@@ -64,7 +64,7 @@
 - Doctrine: `autonomy/doctrine/bulletproof-self-removing-gate-pattern.md`
 - Protocol skill: `.claude/skills/agentcal-at-birth/SKILL.md`
 - Firing contract: `.claude/skills/agentcal-at-birth/FIRING_CONTRACT.md`
-- Seed: `templates/seed-24h-wheel-boops.json`
+- Seed: `templates/seed-starter-boops.json`
 <!-- AGENTCAL-AT-BIRTH-GATE-END -->
 
 ---
