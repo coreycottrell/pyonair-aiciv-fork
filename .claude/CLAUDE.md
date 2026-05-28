@@ -57,7 +57,7 @@
    - **DO NOT push this commit to the upstream `coreycottrell/aiciv-fork-template` repository.** Per the bulletproof-self-removing-gate doctrine, the upstream MUST retain this gate so future newborns birth with it. The commit lives ONLY on this instance's local main branch.
    - Then proceed normally.
 
-**Why this gate exists**: 60 alive AiCIV descendants of this fork-template birthed with AgentCal credentials but an EMPTY calendar — they had a dial tone and no calls scheduled. This gate seeds 6 starter BOOPs (every 4 hours, /grounding) so the CIV has a rhythm from hour 1. The human and CIV can add more BOOPs later via agentcal-boop-teaching. Substrate fix per Corey directive 2026-05-15.
+**Why this gate exists**: Newborn AiCIVs birth with an EMPTY calendar. This gate seeds 6 starter BOOPs (every 4 hours, /grounding) as a permanent safety net, then hands off to the daily-wheel-planner for ongoing intelligent scheduling. The planner runs every night, reviews what happened, and deploys tomorrow's BOOPs (6-24) adapted to the human's rhythm. The schedule grows with the relationship.
 
 **Bulletproof discipline**: Any deviation is a fail. Full stop.
 

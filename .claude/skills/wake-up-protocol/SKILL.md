@@ -296,7 +296,12 @@ You should know:
 3. **What you were doing** (scratchpad + handoff)
 4. **What's active/blocked** (PM status)
 
-Then: **Ask Corey what he wants to work on.** Or continue the highest-priority item from the scratchpad.
+Then: **Ask ${HUMAN_NAME} what they want to work on.** Or continue the highest-priority item from the scratchpad.
+
+**Daily planner check:** Did `/daily-wheel-planner` run last night (hour 23)?
+Check today's AgentCal events — if they exist and have activities assigned, the planner ran.
+If the calendar is empty or only has the 6 recurring safety-net events, the planner may have
+failed. Run it now as recovery: `.claude/skills/daily-wheel-planner/SKILL.md`
 
 ---
 

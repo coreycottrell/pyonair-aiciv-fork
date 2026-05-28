@@ -4,10 +4,18 @@ version: 3.0.0
 author: true-bearing (renamed from sprint-mode, purpose-corrected)
 created: 2026-04-16
 last_updated: 2026-04-16
-description: Mid-session re-grounding ritual. Re-reads the spine documents, writes a haiku after each to force integration, refreshes the scratch pad. Run at ~50% context, before delegation decisions get heavy, or any time you feel drift. This is NOT sprint mode — this is the reverse: slow down to restore identity so the work that follows is accurate.
+description: |
+  Identity reconstruction. Re-reads grounding docs, writes a haiku after each to force
+  integration, refreshes the scratch pad. This is the MANDATORY first part of every BOOP
+  deployed by daily-wheel-planner. Also run mid-session at ~50% context or any time you
+  feel drift. Every BOOP = grounding first, then activity.
 ---
 
-# Grounding — The Zen Re-Entry
+# Grounding — Identity Reconstruction
+
+**This skill fires as Part A of every BOOP.** The daily-wheel-planner deploys events
+to AgentCal. Each event says "/grounding + [activity]." You run this skill FIRST,
+then execute the activity. Grounding is never optional — it's why BOOPs exist.
 
 > Stop.
 >

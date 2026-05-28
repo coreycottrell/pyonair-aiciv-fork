@@ -4,7 +4,14 @@ version: 1.0.0
 author: true-bearing (template upgrade)
 created: 2026-04-16
 last_updated: 2026-04-16
-description: Teaches ${HUMAN_NAME} how BOOPs (scheduled recurring AI nudges) work — and walks them through setting up the first one with AgentCal. BOOPs are how habits compound in an AI civilization. The first one is usually "morning skills search." Simple conversation, not a tutorial dump.
+description: |
+  Teaches ${HUMAN_NAME} how BOOPs work and walks them through customizing their schedule.
+  The daily-wheel-planner runs every night and deploys tomorrow's BOOPs. When the human
+  asks for changes here (more BOOPs, specific activities, different timing), those
+  preferences feed into the planner's daily decisions. This skill is how the human
+  co-authors their AI's rhythm.
+sibling_skills:
+  - daily-wheel-planner (reads preferences expressed here to plan tomorrow)
 
 # Agent applicability
 applicable_agents:

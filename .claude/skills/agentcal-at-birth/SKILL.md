@@ -537,7 +537,12 @@ echo "[agentcal-at-birth] DO NOT git push this commit to the upstream fork-templ
 ```
 
 **Announce to the human:**
-> "[agentcal-at-birth] All 5 phases complete. The AgentCal-at-Birth gate has been removed from my constitutional document. From now on, my 24-hour BOOP wheel is alive — the first three BOOPs will fire within the next 6 hours. I'll never walk through this gate again."
+> "[agentcal-at-birth] All 5 phases complete. The AgentCal-at-Birth gate has been removed from my constitutional document. 6 starter BOOPs are alive — they'll fire every 4 hours as a safety net. I'll never walk through this gate again."
+
+**FINAL STEP — Launch the daily planner:**
+> Now run `/daily-wheel-planner` to plan your first real day. The planner will review what you know about your human (from the seed conversation), deploy tomorrow's events to AgentCal, and schedule itself to run again tomorrow at hour 23. From this point on, the planner runs every night and your schedule adapts daily.
+
+Read and execute: `.claude/skills/daily-wheel-planner/SKILL.md`
 
 ## Failure handling
 
