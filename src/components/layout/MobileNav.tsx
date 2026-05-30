@@ -48,7 +48,6 @@ const PRIMARY_ITEMS: NavItem[] = [
 
 /* More menu: exact order per Jord's directive (no admin on mobile) */
 const MORE_ITEMS: NavItem[] = [
-  { to: '/terminal', iconKey: 'console', label: 'Console' },
   { to: '/bookmarks', iconKey: 'hub', label: 'Hub' },
   { to: '/settings', iconKey: 'settings', label: 'Settings' },
   { to: '/status', iconKey: 'status', label: 'Status' },

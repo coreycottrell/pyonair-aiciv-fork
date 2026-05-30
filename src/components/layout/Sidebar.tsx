@@ -43,7 +43,6 @@ const SECTION_1: NavItem[] = [
   { to: '/teamchat', iconKey: 'teamchat', label: 'Team AI Chat' },
   { to: '/calendar', iconKey: 'calendar', label: 'Calendar' },
   { to: '/mail', iconKey: 'mail', label: 'Agent Mail' },
-  { to: '/terminal', iconKey: 'console', label: 'Console' },
   { to: '/bookmarks', iconKey: 'hub', label: 'Hub' },
   { to: '/settings', iconKey: 'settings', label: 'Settings' },
   { to: '/status', iconKey: 'status', label: 'Status' },
