@@ -1,5 +1,5 @@
 node_modules/
-dist/
+# dist/ kept in repo for faster births (pre-built)
 *.db
 *.log
 .portal-token

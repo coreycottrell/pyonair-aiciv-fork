@@ -45,7 +45,7 @@ SCRIPT_DIR = Path(__file__).parent
 TOKEN_FILE = SCRIPT_DIR / ".portal-token"
 PORTAL_HTML = SCRIPT_DIR / "portal.html"
 PORTAL_PB_HTML = SCRIPT_DIR / "portal-pb-styled.html"
-REACT_DIST = SCRIPT_DIR / "react-portal" / "dist"
+REACT_DIST = SCRIPT_DIR / "dist"
 START_TIME = time.time()
 PORTAL_VERSION = "1.0.1"
 RELEASE_NOTES_FILE = SCRIPT_DIR / "release_notes.json"
@@ -7436,7 +7436,7 @@ async def ws_browser(websocket: WebSocket) -> None:
 # App
 # ---------------------------------------------------------------------------
 _react_assets_mount = (
-    [Mount("/react/assets", app=StaticFiles(directory=str(REACT_DIST / "assets")))]
+    [Mount("/assets", app=StaticFiles(directory=str(REACT_DIST / "assets")))]
     if (REACT_DIST / "assets").exists()
     else []
 )
