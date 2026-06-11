@@ -1604,7 +1604,7 @@ async def api_resume(request: Request) -> JSONResponse:
         marker = Path.home() / ".current_session"
         marker.write_text(tmux_session)
         claude_cmd = (
-            f"claude --model claude-sonnet-4-6 --dangerously-skip-permissions "
+            f"claude --model 'claude-opus-4-8[1m]' --dangerously-skip-permissions "
             f"--resume {session_id}"
         )
         # Popen is fire-and-forget so we use run_in_executor to avoid blocking
@@ -6191,7 +6191,7 @@ async def api_agents_create(request: Request) -> JSONResponse:
     name = (body.get("name") or "").strip()
     description = (body.get("description") or "").strip()
     department = (body.get("department") or "Other").strip()
-    model = (body.get("model") or "sonnet").strip()
+    model = (body.get("model") or "claude-opus-4-8").strip()
     tools = body.get("tools") or "Read, Write, Edit, Bash, Grep, Glob"
     prompt = (body.get("prompt") or "").strip()
     is_lead = 1 if body.get("is_lead") else 0

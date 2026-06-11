@@ -62,7 +62,7 @@ Create a new agent manifest to fill a capability gap.
        "name": "Agent Name",
        "description": "What this agent does",
        "department": "Department Name",
-       "model": "sonnet",
+       "model": "claude-opus-4-8",
        "tools": "Read, Write, Edit, Bash, Grep, Glob",
        "prompt": "You are... (full system prompt)",
        "is_lead": false,
