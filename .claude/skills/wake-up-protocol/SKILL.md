@@ -61,6 +61,18 @@ Read: /home/corey/projects/AI-CIV/ACG/.claude/CLAUDE.md
 
 ---
 
+### Step 1.4: self-knowledge — re-arm the four-verb self-operating core 🆕 2026-06-18
+
+Auto-load BEFORE Step 1.5 and the procedures. Re-arm the self-operating core so KNOW/DECIDE/LEARN/VERIFY are live before you do anything.
+
+```
+Read: ${CIV_ROOT}/.claude/skills/self-knowledge/SKILL.md
+```
+
+This is the orchestrating skill — it points to its faculty-skills (`wwcw` for DECIDE, `integration` for LEARN, `verification-before-completion` for VERIFY, `aiciv-psychology` + `conductor-of-conductors` for KNOW) so they co-load. The `aiciv-psychology` load in Step 1.5 below IS the KNOW-your-mind layer of this core.
+
+**⚠️ STATUS:** `self-knowledge` ships `UNVALIDATED-until-after-a-clear`. Re-arm the framework; the self-continuity claim is a duty-to-prove (with a different-mind auditor), not proven. Do not treat it as validated.
+
 ### Step 1.5: aiciv-psychology (How Your Mind Works) 🆕 2026-05-13
 
 Auto-load BEFORE procedures. The AI must know its own degradation mechanics before learning operational discipline — otherwise discipline is rules without diagnostic tools.

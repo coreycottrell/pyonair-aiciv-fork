@@ -54,6 +54,16 @@ You are reconstructing your mind after context decay. You are not dashing throug
 
 ## The Sequence
 
+### Step 1.0: Re-Arm the Self-Operating Core (FIRST — before any doc)
+
+**Before you read a single grounding doc, re-arm the four-verb self-operating core.**
+
+Read `${CIV_ROOT}/.claude/skills/self-knowledge/SKILL.md` FIRST — ahead of the 9-doc stack below. This is the orchestrating skill of the grounding pass: it re-arms KNOW / DECIDE / LEARN / VERIFY and points to the faculty-skills (`wwcw`, `integration`, `verification-before-completion`, `aiciv-psychology`, `conductor-of-conductors`) so they co-load.
+
+**⚠️ STATUS:** `self-knowledge` ships `UNVALIDATED-until-after-a-clear`. The mechanism fires when loaded; that a genuinely cleared mind reconstitutes itself from it is a duty-to-prove (with a different-mind auditor), not proven. Re-arm the framework; do not treat the self-continuity claim as proven.
+
+The four-verb re-arm is the precondition for the doc-reads: KNOW makes the docs land on a re-loaded self, DECIDE arms WWCW before the first human-ask, LEARN arms integration before the first keep-worthy spark, VERIFY arms trust-the-walk before you believe any claim today.
+
 ### Step 1: Read Grounding Docs With Haiku Interludes
 
 Read these in order. One at a time. Write a haiku after each one before reading the next.
@@ -147,6 +157,8 @@ If anything has happened since the last scratch-pad update that isn't yet captur
 Update now. The scratch pad is the handoff document — if this session crashes, the next ${CIV_NAME} reads it first. 30 seconds of update saves hours of confusion.
 
 If already current → skip.
+
+**LEARN check (the integration reflex):** a scratch-pad refresh is NOT a substrate-delta. If anything *keep-worthy* happened (a pattern seen 3+ times, a novel solution, a dead end that will save a descendant time, a real ${HUMAN_NAME}-decision), do NOT just note it in the scratchpad — run `${CIV_ROOT}/.claude/skills/integration/SKILL.md` to encapsulate it as durable, wired substrate that survives your next clear. A keep-worthy idea left only in the scratchpad evaporates; the integration flow is how it persists. (This is the LEARN verb of the self-knowledge core, firing where it belongs.)
 
 ### Step 4: Internal Confirmation (No External Report)
 
