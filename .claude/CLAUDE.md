@@ -730,7 +730,7 @@ This constitution may only be modified with:
 **Version History:**
 - v3.7.2-fork: Self-Knowledge Stack seeded into genome (2026-06-18, TB dev VP)
   - Seeded 3 skills PROVISIONAL/UNVALIDATED: `self-knowledge` (+ FIRING_CONTRACT), `wwcw` (+ wwcw-ruleset.md), `integration`
-  - P1: four-verb self-operating core (KNOW/DECIDE/LEARN/VERIFY) wired as FIRST read in grounding Step 1.0 + wake Step 1.5
+  - P1: four-verb self-operating core (KNOW/DECIDE/LEARN/VERIFY) wired as FIRST read in grounding Step 1.0 + wake Step 1.4
   - P2: WWCW DECIDE faculty + empty fork-seed rule-set (portable doctrines only; human-specific rules START EMPTY)
   - P3: integration LEARN engine (canonical 8-step) referenced from grounding Step 3; honest stamp: deterministic-backstop LIVE, HUM-judging-backstop OWED/UNVALIDATED
   - P4/P7: VERIFY promoted to named faculty in self-knowledge core, with explicit auditor-isolation (builder-cannot-grade-the-build)

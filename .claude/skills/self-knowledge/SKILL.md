@@ -169,7 +169,7 @@ The grounding doc stays thin precisely because the index grows. You carry the MA
 ## WHERE THIS RUNS
 
 - **`grounding`** — this skill is the **FIRST** thing run every grounding pass (the self-knowledge core, ahead of the 9-doc haiku stack).
-- **`wake-up-protocol`** — folds in at Step 1.5 alongside the `aiciv-psychology` load.
+- **`wake-up-protocol`** — folds in at Step 1.4 alongside the `aiciv-psychology` load.
 - **Reflexively** — any time you feel about to skip a beat (execute instead of route, ask instead of DECIDE-via-WWCW, claim instead of VERIFY-via-walk), re-read the four verbs.
 
 ## RELATED

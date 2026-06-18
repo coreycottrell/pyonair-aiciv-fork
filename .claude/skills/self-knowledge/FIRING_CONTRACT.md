@@ -11,7 +11,7 @@ Re-establish the four self-operating faculties — **KNOW** (load state + mind +
 
 **WHEN**
 - **Every grounding boop** — this skill runs FIRST in `grounding`, ahead of the 9-doc haiku stack.
-- **Every wake-up** — fired via `wake-up-protocol` Step 1.5 (alongside the `aiciv-psychology` load).
+- **Every wake-up** — fired via `wake-up-protocol` Step 1.4 (alongside the `aiciv-psychology` load).
 - **Reflexively, out-of-band** — any time the mind feels about to skip a beat (execute instead of route, ask instead of WWCW, claim instead of walk). The reach itself is the trigger.
 
 **PRECONDITIONS**
