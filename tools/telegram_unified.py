@@ -385,6 +385,11 @@ class TelegramBot:
         self.tmux_session: Optional[str] = None
         self.tmux_pane: Optional[str] = None
 
+        # Inject-health tracking (Witness addition B): N consecutive failed
+        # injects means "poller alive but messages not landing" -> unhealthy.
+        self._consecutive_inject_failures: int = 0
+        self._inject_failure_threshold: int = 3
+
         # Log streaming state
         self.current_session: Optional[str] = None
         self.current_log_path: Optional[Path] = None
@@ -403,6 +408,15 @@ class TelegramBot:
         # Injection deduplication (defense in depth against multiple instances)
         # Tracks recent message hashes to prevent duplicate injection
         self._recent_injections: deque = deque(maxlen=100)
+
+        # SHOULD-FIX-3: physical-send guard. The _recent_injections dedup above
+        # is UPSTREAM of the not-landed retry and does NOT protect it: if Claude
+        # echoes the injected tail into its own output, the landed-probe is
+        # 'found' -> false not-landed -> the retry re-sends -> DOUBLE DELIVERY.
+        # This set tracks msg_hashes whose payload has already been PHYSICALLY
+        # send-keys'd, so the retry can never physically re-send the same message
+        # more than once.
+        self._physically_sent: deque = deque(maxlen=200)
 
         # Rate limiting and exponential backoff
         self.rate_limiter = RateLimiter()
@@ -621,8 +635,10 @@ class TelegramBot:
         # Detect tmux session
         self.tmux_session = self._detect_acg_session()
         if self.tmux_session:
-            self.tmux_pane = f"{self.tmux_session}:0.0"
-            logger.info(f"Detected ACG tmux session: {self.tmux_session}")
+            # Defect #2: detect the pane actually running `claude` instead of
+            # hardcoding ':0.0' (which breaks when the layout changes).
+            self.tmux_pane = self._detect_claude_pane(self.tmux_session)
+            logger.info(f"Detected ACG tmux session: {self.tmux_session} (pane {self.tmux_pane})")
         else:
             logger.warning("No ACG tmux session detected - injection will fail")
 
@@ -684,6 +700,17 @@ class TelegramBot:
                 if now - last_session_refresh >= 60:
                     last_session_refresh = now
                     await self._refresh_session_if_needed()
+                    # Witness addition B: if injects have been consecutively
+                    # failing, the poller is alive but messages are NOT landing.
+                    # Force a pane/session re-detect so a layout change self-heals
+                    # instead of stranding the bridge silently.
+                    if self._inject_health_unhealthy():
+                        logger.error(
+                            f"Inject watchdog: {self._consecutive_inject_failures} "
+                            f"consecutive failures -> forcing pane re-detect"
+                        )
+                        self._redetect_claude_pane()
+                        self._consecutive_inject_failures = 0
 
                 # Sleep based on rate limiter state
                 await asyncio.sleep(poll_interval)
@@ -702,8 +729,11 @@ class TelegramBot:
             if new_session and new_session != self.tmux_session:
                 logger.info(f"Session change detected: {self.tmux_session} -> {new_session}")
                 self.tmux_session = new_session
-                self.tmux_pane = f"{new_session}:0.0"
-                await self._send_message(f"Switched to new session: {new_session}")
+                # Defect #2: detect the real claude pane on session change too.
+                self.tmux_pane = self._detect_claude_pane(new_session)
+                # Session-switch is internal-ops status, not genuine CIV output:
+                # log it, do not push to the client channel (fail-closed doctrine).
+                logger.info(f"Switched to new session: {new_session} (pane {self.tmux_pane})")
             elif not new_session and self.tmux_session:
                 # Current session may have died, try to find any available
                 logger.warning(f"Current session {self.tmux_session} may be gone, checking...")
@@ -935,7 +965,25 @@ class TelegramBot:
 
             # Inject to tmux so Claude knows about the file
             if self.tmux_pane:
+                # Defect #3: wait briefly for a send-ready pane; re-detect if the
+                # pane is stuck on a modal/login so the attachment notice lands.
+                if not self._pane_send_ready(self.tmux_pane):
+                    for _ in range(5):
+                        await asyncio.sleep(0.5)
+                        if self._pane_send_ready(self.tmux_pane):
+                            break
+                    else:
+                        self._redetect_claude_pane()
+                # SHOULD-FIX-4: mirror the text path's landed-verify + one-attempt
+                # retry + failure-accounting. Without this, the attachment inject
+                # (the "FILE saved to" notice) is a silent-drop hole: it fires
+                # send-keys blindly and never checks the notice landed. Attachment
+                # notices are short (single-send), so chunked=False.
+                att_hash = hashlib.md5(
+                    f"ATTACH:{attachment_msg}:{chat_id}".encode()
+                ).hexdigest()
                 try:
+                    self._physically_sent.append(att_hash)  # SHOULD-FIX-3 guard
                     subprocess.run(
                         ["tmux", "send-keys", "-t", self.tmux_pane, "-l", attachment_msg],
                         check=True, timeout=5
@@ -947,8 +995,38 @@ class TelegramBot:
                             ["tmux", "send-keys", "-t", self.tmux_pane, "Enter"],
                             check=True, timeout=2
                         )
+                    # SHOULD-FIX-4: landed-verify + one bounded retry + accounting.
+                    if not self._inject_landed(self.tmux_pane, attachment_msg, chunked=False):
+                        logger.warning("Attachment inject did not land; re-detecting + retrying once (SHOULD-FIX-4)")
+                        self._record_inject_failure()
+                        already_resent = self._physically_sent.count(att_hash) >= 2
+                        if already_resent:
+                            logger.warning(
+                                "Attachment retry suppressed (SHOULD-FIX-3): "
+                                "already physically re-sent once; not double-delivering"
+                            )
+                        elif self._redetect_claude_pane() and self._pane_send_ready(self.tmux_pane):
+                            self._physically_sent.append(att_hash)
+                            subprocess.run(
+                                ["tmux", "send-keys", "-t", self.tmux_pane, "-l", attachment_msg],
+                                check=True, timeout=5
+                            )
+                            for _ in range(5):
+                                await asyncio.sleep(0.4)
+                                subprocess.run(
+                                    ["tmux", "send-keys", "-t", self.tmux_pane, "Enter"],
+                                    check=True, timeout=2
+                                )
+                            if self._inject_landed(self.tmux_pane, attachment_msg, chunked=False):
+                                self._record_inject_success()
+                                logger.info("Attachment inject landed on retry")
+                            else:
+                                logger.error("Attachment inject retry still did not land")
+                    else:
+                        self._record_inject_success()
                 except Exception as e:
                     logger.error(f"tmux injection failed for attachment: {e}")
+                    self._record_inject_failure()
 
             # Also handle any caption text
             caption = message.get("caption", "")
@@ -1113,14 +1191,36 @@ Last success: {uptime:.0f}s ago""" + (f"\nDowntime: {downtime:.0f}s" if downtime
             await self._send_message("Error: No tmux session detected. Cannot inject.")
             return
 
+        # Defect #3 (lost-inject race): do not fire send-keys blindly. If the pane
+        # is showing a modal / login / confirm surface, the keys 'succeed' (rc 0)
+        # but never land in the Claude TUI = a silently dropped message. Wait a
+        # bounded window for the pane to return to normal input state before
+        # injecting; if it never does, re-detect the pane once (a layout change
+        # may have moved Claude to a new pane) and try again.
+        if not self._pane_send_ready(self.tmux_pane):
+            for _ in range(5):  # up to ~2.5s
+                await asyncio.sleep(0.5)
+                if self._pane_send_ready(self.tmux_pane):
+                    break
+            else:
+                logger.warning("Pane not send-ready; re-detecting before inject (defect #3/addition A)")
+                self._redetect_claude_pane()
+
         try:
             # Send text to tmux using chunked approach for reliability
             # Issue: Large messages (>100 chars) can silently fail with tmux send-keys
             # Root cause: tmux input buffer overflow when sending large strings at once
             # Solution: Send in chunks with small delays between them
             CHUNK_SIZE = 100  # Characters per chunk
+            is_chunked = len(formatted) > CHUNK_SIZE
 
-            if len(formatted) > CHUNK_SIZE:
+            # SHOULD-FIX-3: record the PHYSICAL send before firing send-keys, so
+            # the not-landed retry below can refuse to physically re-send the same
+            # payload a second time (guards against double-delivery when Claude
+            # echoes our tail and trips a false not-landed).
+            self._physically_sent.append(msg_hash)
+
+            if is_chunked:
                 # Chunked sending for large messages
                 for i in range(0, len(formatted), CHUNK_SIZE):
                     chunk = formatted[i:i+CHUNK_SIZE]
@@ -1152,16 +1252,60 @@ Last success: {uptime:.0f}s ago""" + (f"\nDowntime: {downtime:.0f}s" if downtime
                 await self._send_message("Warning: Enter key may not have registered. Send '.' if needed.")
                 return
 
+            # Defect #3 (post-inject landed-verify): confirm the input line
+            # actually cleared / the pane advanced. If the send-buffer still
+            # shows our text sitting unsubmitted (or the pane can't be read), the
+            # inject did NOT land -> treat as a failure so addition A (re-detect +
+            # retry) and addition B (consecutive-failure watchdog) can act.
+            landed = self._inject_landed(self.tmux_pane, formatted, chunked=is_chunked)
+            if not landed:
+                logger.warning("Inject did not appear to land; re-detecting + retrying once (addition A)")
+                self._record_inject_failure()
+                # SHOULD-FIX-3: only PHYSICALLY re-send if this exact payload has
+                # not already been physically sent more than once. The first send
+                # above appended msg_hash once; a second physical send would make
+                # it appear twice. Refuse in that case so a false not-landed
+                # (e.g. Claude echoed our tail) can never double-deliver.
+                already_resent = self._physically_sent.count(msg_hash) >= 2
+                if already_resent:
+                    logger.warning(
+                        "Retry suppressed (SHOULD-FIX-3): payload already "
+                        "physically re-sent once; refusing to double-deliver"
+                    )
+                elif self._redetect_claude_pane() and self._pane_send_ready(self.tmux_pane):
+                    # Mark the physical re-send BEFORE firing it.
+                    self._physically_sent.append(msg_hash)
+                    subprocess.run(
+                        ["tmux", "send-keys", "-t", self.tmux_pane, "-l", formatted],
+                        check=True, timeout=5
+                    )
+                    for _ in range(5):
+                        await asyncio.sleep(0.4)
+                        subprocess.run(
+                            ["tmux", "send-keys", "-t", self.tmux_pane, "Enter"],
+                            check=True, timeout=2
+                        )
+                    if self._inject_landed(self.tmux_pane, formatted, chunked=is_chunked):
+                        self._record_inject_success()
+                        logger.info(f"Inject landed on retry: {formatted[:50]}...")
+                    else:
+                        logger.error("Inject retry still did not land")
+                return
+
+            self._record_inject_success()
             logger.info(f"Injected to tmux: {formatted[:50]}...")
 
-            # Acknowledge injection (response will come via log stream)
-            await self._send_message(f"Injected to Claude. Awaiting response...")
+            # NOTE: the "Injected to Claude. Awaiting response..." ack is
+            # intentionally NOT sent to the client (fail-closed auto-pop
+            # doctrine) — the genuine reply arrives via the log-stream path.
 
         except subprocess.CalledProcessError as e:
             logger.error(f"tmux injection failed: {e}")
+            self._record_inject_failure()
             await self._send_message(f"Error: tmux injection failed")
         except subprocess.TimeoutExpired:
             logger.error("tmux injection timed out")
+            self._record_inject_failure()
             await self._send_message("Error: tmux injection timed out")
 
     # ========== Claude Log Streaming ==========
@@ -1725,6 +1869,263 @@ Last success: {uptime:.0f}s ago""" + (f"\nDowntime: {downtime:.0f}s" if downtime
         except Exception as e:
             logger.error(f"Session detection error: {e}")
             return None
+
+    def _detect_claude_pane(self, session: str) -> str:
+        """Find the pane actually running `claude` in a session.
+
+        Hardcoding ':0.0' breaks when the pane layout changes (e.g. pane 0
+        becomes a bash shell while Claude runs in pane 7). We list panes and
+        pick the claude pane with the most recent activity. Falls back to
+        ':0.0' only if no claude pane is found.
+        """
+        fallback = f"{session}:0.0"
+        try:
+            result = subprocess.run(
+                ["tmux", "list-panes", "-t", session, "-F",
+                 "#{pane_index}\t#{pane_current_command}\t#{pane_activity}"],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode != 0:
+                return fallback
+
+            claude_panes = []
+            for line in result.stdout.strip().split('\n'):
+                parts = line.split('\t')
+                if len(parts) < 2:
+                    continue
+                idx, cmd = parts[0], parts[1]
+                activity = parts[2] if len(parts) > 2 else "0"
+                if cmd.strip() == "claude":
+                    try:
+                        act = int(activity)
+                    except (ValueError, TypeError):
+                        act = 0
+                    claude_panes.append((act, idx))
+
+            if not claude_panes:
+                logger.warning(f"No claude pane found in {session}, using {fallback}")
+                return fallback
+
+            # Most recently active claude pane wins
+            claude_panes.sort(reverse=True)
+            chosen = f"{session}:0.{claude_panes[0][1]}"
+            logger.info(f"Detected claude pane: {chosen} (from {len(claude_panes)} candidates)")
+            return chosen
+        except Exception as e:
+            logger.error(f"Claude pane detection error: {e}, using {fallback}")
+            return fallback
+
+    def _redetect_claude_pane(self) -> bool:
+        """Re-run pane detection on the CURRENT session after an inject failure.
+
+        Defect #3 / Witness addition A: a layout change (Claude moved to a new
+        pane, a modal/login stole pane 0) strands a bridge that only detected
+        its pane at startup. Re-detecting on failure lets the bridge self-heal
+        instead of injecting into a dead/bash pane forever. Returns True if a
+        (possibly new) target pane is now set, False if no session at all.
+        """
+        try:
+            session = self._detect_acg_session() or self.tmux_session
+            if not session:
+                logger.error("Re-detect: no tmux session available")
+                self.tmux_session = None
+                self.tmux_pane = None
+                return False
+            self.tmux_session = session
+            new_pane = self._detect_claude_pane(session)
+            if new_pane != self.tmux_pane:
+                logger.warning(f"Re-detected claude pane after failure: {self.tmux_pane} -> {new_pane}")
+            self.tmux_pane = new_pane
+            return True
+        except Exception as e:
+            logger.error(f"Pane re-detection error: {e}")
+            return False
+
+    def _pane_send_ready(self, pane: str) -> bool:
+        """Conservative SEND-READY check before a tmux inject.
+
+        Defect #3 (portal-chat / TG lost-inject race): a send-keys can 'succeed'
+        (rc 0) yet never LAND in the Claude TUI if the pane is showing a modal or
+        a `/login` prompt rather than the normal input state. We err toward
+        NOT-injecting when we cannot confirm normal input state, then retry.
+
+        Heuristic (best-effort, conservative): capture the pane's visible tail
+        and treat it as NOT ready if it shows a known blocking surface (login/
+        OAuth prompt, a modal asking to press a key/Enter to continue, a confirm
+        dialog). Anything else = ready. If we cannot capture the pane at all,
+        treat as NOT ready (fail-closed -> retry).
+        """
+        try:
+            result = subprocess.run(
+                ["tmux", "capture-pane", "-t", pane, "-p"],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode != 0:
+                return False
+            tail = "\n".join(result.stdout.splitlines()[-12:]).lower()
+            blocking_markers = (
+                "press enter to continue",
+                "paste the code",
+                "waiting for the code",
+                "authenticate",
+                "sign in to",
+                "log in to",
+                "/login",
+                "oauth",
+                "do you want to proceed",
+                "1. yes",       # CC permission/confirm modal choice
+                "select an option",
+            )
+            if any(m in tail for m in blocking_markers):
+                logger.warning(f"Pane {pane} not send-ready (blocking surface detected)")
+                return False
+            return True
+        except Exception as e:
+            logger.error(f"Send-ready check error on {pane}: {e}")
+            return False
+
+    def _pane_current_command(self, pane: str) -> Optional[str]:
+        """Read the foreground command of a specific pane (e.g. 'claude', 'bash').
+
+        BLOCKER-1 fix: 'landed' can only be inferred from probe-ABSENCE when we
+        POSITIVELY know Claude is the pane consuming input. On a wrong-pane / bash
+        / modal drop the probe text is ALSO absent (it went nowhere), so absence
+        alone falsely reads as 'landed' and green-lights the exact stranded case
+        _inject_landed exists to catch. Returns the command string, or None if we
+        cannot read it (caller MUST treat None as 'not confirmed' -> fail-closed).
+        """
+        try:
+            result = subprocess.run(
+                ["tmux", "display-message", "-p", "-t", pane,
+                 "#{pane_current_command}"],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode != 0:
+                return None
+            cmd = result.stdout.strip()
+            return cmd if cmd else None
+        except Exception as e:
+            logger.error(f"pane_current_command read error on {pane}: {e}")
+            return None
+
+    def _pane_input_idle(self, pane: str, formatted: str) -> bool:
+        """True when the pane's input line does NOT still hold our injected text.
+
+        Shared tail-probe used by the landed-verify path. Fail-closed: an
+        unreadable pane returns False (probe cannot be confirmed absent).
+        """
+        try:
+            result = subprocess.run(
+                ["tmux", "capture-pane", "-t", pane, "-p"],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode != 0:
+                return False
+            tail = "\n".join(result.stdout.splitlines()[-6:])
+            probe = formatted[-40:].strip()
+            if probe and probe in tail:
+                # Our text is still sitting on the input line un-submitted.
+                return False
+            return True
+        except Exception as e:
+            logger.error(f"input-idle read error on {pane}: {e}")
+            return False
+
+    def _inject_landed(self, pane: str, formatted: str, chunked: bool = False) -> bool:
+        """POSITIVE-SIGNAL post-inject LANDED verification (defect #3).
+
+        A message that LANDED was submitted, so the input line should not still
+        hold our injected text. But probe-ABSENCE is only meaningful as a landing
+        proof when we can POSITIVELY confirm Claude is the pane consuming input:
+
+        - BLOCKER-1: require pane_current_command == 'claude' AND probe-absent.
+          On a wrong-pane/bash/modal drop the text went nowhere, so it is ALSO
+          absent -- absence on an UNCONFIRMED pane is NOT a landing proof, it is
+          the stranded case we exist to catch. If the current command is not
+          'claude' (or is unreadable), report NOT landed -> retry.
+
+        - BLOCKER-2 (chunked path, message > CHUNK_SIZE): the single 40-char
+          tail-probe only inspects the LAST chunk; an EARLIER chunk dropping would
+          truncate the message yet still pass last-40-absence. For chunked sends
+          we therefore require POSITIVE evidence the whole message was consumed:
+          the pane is 'claude' and NO sampled slice across the payload (start /
+          middle / end) still lingers on the input line -- i.e. the pane advanced
+          past input state for the WHOLE message, not just the final chunk.
+
+        Fail-closed throughout: an unreadable pane / non-claude command / probe
+        still present ⇒ NOT landed. A false 'not landed' costs one idempotent
+        retry (guarded against double physical-send by SHOULD-FIX-3); a false
+        'landed' would silently drop the message, which is the failure we kill.
+        """
+        # BLOCKER-1: positive pane confirmation is mandatory. Absence of the
+        # probe only proves 'consumed' if Claude is the one consuming.
+        cmd = self._pane_current_command(pane)
+        if cmd != "claude":
+            logger.warning(
+                f"Landed-verify: pane {pane} current command is "
+                f"{cmd!r}, not 'claude' -> NOT landed (fail-closed)"
+            )
+            return False
+
+        # Probe-absence on a confirmed 'claude' pane = consumed by Claude.
+        if not self._pane_input_idle(pane, formatted):
+            return False
+
+        if chunked:
+            # BLOCKER-2: the tail-only probe cannot see a dropped earlier chunk.
+            # Require positive evidence the pane advanced past input state for the
+            # WHOLE message: sample distinctive slices across the payload and
+            # confirm NONE still lingers on the input line. A truncated send
+            # leaves an earlier slice behind; a fully-consumed send leaves none.
+            try:
+                result = subprocess.run(
+                    ["tmux", "capture-pane", "-t", pane, "-p"],
+                    capture_output=True, text=True, timeout=5
+                )
+                if result.returncode != 0:
+                    return False
+                tail = "\n".join(result.stdout.splitlines()[-8:])
+                slices = []
+                n = len(formatted)
+                for frac in (0.25, 0.5, 0.75, 1.0):
+                    end = int(n * frac)
+                    start = max(0, end - 30)
+                    s = formatted[start:end].strip()
+                    if s:
+                        slices.append(s)
+                if any(s in tail for s in slices):
+                    logger.warning(
+                        "Landed-verify (chunked): a payload slice still on input "
+                        "line -> earlier chunk dropped, NOT landed"
+                    )
+                    return False
+            except Exception as e:
+                logger.error(f"Chunked landed-verify error on {pane}: {e}")
+                return False
+
+        return True
+
+    def _record_inject_failure(self):
+        """Count a failed/undelivered inject (Witness addition B)."""
+        self._consecutive_inject_failures += 1
+        logger.warning(
+            f"Inject failure count: {self._consecutive_inject_failures}"
+            f"/{self._inject_failure_threshold}"
+        )
+
+    def _record_inject_success(self):
+        """Reset the consecutive-failure counter on a landed inject."""
+        if self._consecutive_inject_failures:
+            logger.info(
+                f"Inject recovered after {self._consecutive_inject_failures} failure(s)"
+            )
+        self._consecutive_inject_failures = 0
+
+    def _inject_health_unhealthy(self) -> bool:
+        """Witness addition B: True when consecutive inject failures cross the
+        threshold. 'Poller alive' is NOT 'messages landing' — the watchdog reads
+        this to force a session/pane re-detect (and could bounce)."""
+        return self._consecutive_inject_failures >= self._inject_failure_threshold
 
     def _check_tmux_session(self) -> bool:
         """Check if tmux session exists."""
