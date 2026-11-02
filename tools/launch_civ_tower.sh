@@ -97,7 +97,7 @@ tmux new-session -d -s "${SESSION_NAME}" -c "${PROJECT_DIR}"
 tmux send-keys -t "${SESSION_NAME}" "unset ANTHROPIC_API_KEY" C-m
 
 # Send claude command into the session
-tmux send-keys -t "${SESSION_NAME}" "claude --model claude-opus-4-8 --dangerously-skip-permissions '${CLAUDE_PROMPT}'" C-m
+tmux send-keys -t "${SESSION_NAME}" "claude --dangerously-skip-permissions '${CLAUDE_PROMPT}'" C-m
 
 echo "Tmux session created: ${SESSION_NAME}"
 echo "Working directory: ${PROJECT_DIR}"

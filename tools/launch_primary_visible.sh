@@ -87,7 +87,7 @@ tmux new-session -d -s "${SESSION_NAME}" -c "${CIV_ROOT}"
 
 # Launch Claude Code with --resume inside the tmux session
 tmux send-keys -t "${SESSION_NAME}" \
-    "claude --resume --model claude-opus-4-8 --dangerously-skip-permissions 'Wake up. Read .claude/scratchpad.md then CLAUDE.md. Start working.'" C-m
+    "claude --resume --dangerously-skip-permissions 'Wake up. Read .claude/scratchpad.md then CLAUDE.md. Start working.'" C-m
 
 echo "tmux session created: ${SESSION_NAME}"
 echo ""
